@@ -1846,12 +1846,14 @@ div.passport-note {
     <header>
         <div class="container h-100" id="header">
 
+
+
 <ul class="hList">
 	<li>
-		<a href="/" class="menu">
+		<a href="/124443" onclick="return false" class="menu">
 			<h2 class="menu-title">开发类</h2>
 			<ul class="menu-dropdown">
-				<li>cat</li>
+				<li onclick="webIntent('JSONFormat.html')">Json格式化</li>
 				<li>dog</li>
 				<li>horse</li>
 				<li>cow</li>
@@ -2016,9 +2018,11 @@ div.passport-note {
 
 
 
+
+
 <div class="zhiye item">
-	<h2>职业方向</h2>
-	<a href="/zhiye/" target="_blank">更多职业方向&nbsp;&gt;&gt;</a>
+	<h2>热门工具</h2>
+	<a href=""  target="_blank">更多工具&nbsp;&gt;&gt;</a>
 	<ul >
 		
 				
@@ -2119,7 +2123,7 @@ div.passport-note {
     <ul>
         
         
-          <li>
+          <li id="json_geshi">
                 <a href="/JSONFormat.html" target="_blank">
                     <img src="http://ww1.sinaimg.cn/large/005GPQHggy1fsueeaivxxj309f09twei.jpg" alt="JSON格式化">
                     <h3>Json格式化</h3>
@@ -2614,16 +2618,21 @@ div.passport-note {
 				<span class="top"><i style="display: none;"></i></span>
 			</div>
 		</div>
-		<script type="text/javascript" src="//e.jikexueyuan.com/static/js/login_register.min.js?t=1513326254000"></script>
+		<!--
 		<script>
 function gotop(){var html=$("#gototop");if($(window).scrollTop()<=0){$("#gototop>.top>i").hide()}$("#gototop>.top").bind("click",function(){if($(window).scrollTop()<=0){return false}$("body,html").animate({scrollTop:0},200);return false});$(window).scroll(function(){if($(window).scrollTop()>0){$("#gototop>.top>i").fadeIn()}else{$("#gototop>.top>i").fadeOut()}})}$(function(){gotop()});
 		</script>
 		<script type="text/javascript" src="//e.jikexueyuan.com/headerandfooter/js/meiqia.js?t=1513326254000"></script>
+		
+		<link type="text/css" href="http://g.alicdn.com/sd/ncpc/nc.css?t=20170228" disabled="">
+<script type="text/javascript" src="http://g.alicdn.com/sd/ncpc/nc.js?t=20170228"></script>
+-->
 
+   <script type="text/javascript">LazyLoad=function(e){function t(t,n){var s,r=e.createElement(t);for(s in n)n.hasOwnProperty(s)&&r.setAttribute(s,n[s]);return r}function n(e){var t,n,s=i[e];s&&(t=s.callback,n=s.urls,n.shift(),u=0,n.length||(t&&t.call(s.context,s.obj),i[e]=null,f[e].length&&r(e)))}function s(){var t=navigator.userAgent;o={async:e.createElement("script").async===!0},(o.webkit=/AppleWebKit\//.test(t))||(o.ie=/MSIE|Trident/.test(t))||(o.opera=/Opera/.test(t))||(o.gecko=/Gecko\//.test(t))||(o.unknown=!0)}function r(r,u,h,g,d){var p,y,m,b,k,v,j=function(){n(r)},w="css"===r,E=[];if(o||s(),u)if(u="string"==typeof u?[u]:u.concat(),w||o.async||o.gecko||o.opera)f[r].push({urls:u,callback:h,obj:g,context:d});else for(p=0,y=u.length;y>p;++p)f[r].push({urls:[u[p]],callback:p===y-1?h:null,obj:g,context:d});if(!i[r]&&(b=i[r]=f[r].shift())){for(l||(l=e.head||e.getElementsByTagName("head")[0]),k=b.urls,p=0,y=k.length;y>p;++p){if(v=k[p],w?m=o.gecko?t("style"):t("link",{href:v,rel:"stylesheet"}):(m=t("script",{src:v}),m.async=!1),m.className="lazyload",m.setAttribute("charset","utf-8"),o.ie&&!w&&"onreadystatechange"in m&&!("draggable"in m))m.onreadystatechange=function(){/loaded|complete/.test(m.readyState)&&(m.onreadystatechange=null,j())};else if(w&&(o.gecko||o.webkit))if(o.webkit){var T;if(b.urls[p]=m.href,T=c()){p--,y=k.length;continue}}else m.innerHTML='@import "'+v+'";',a(m);else m.onload=m.onerror=j;E.push(m)}var A=document.createDocumentFragment();for(p=0,y=E.length;y>p;++p)A.appendChild(E[p]);var x;return"css"===r?x=l:"js"===r&&(x=document.getElementById("pages-container")||l),x.appendChild(A),E}}function a(e){var t;try{t=!!e.sheet.cssRules}catch(s){return u+=1,void(200>u?setTimeout(function(){a(e)},50):t&&n("css"))}n("css")}function c(){var e,t=i.css,s=!1;if(t){for(e=h.length;--e>=0;)if(h[e].href===t.urls[0]){s=!0,n("css");break}u+=1,t&&(200>u?setTimeout(c,50):n("css"))}return s}var o,l,i={},u=0,f={css:[],js:[]},h=e.styleSheets;return{css:function(e,t,n,s){r("css",e,t,n,s)},js:function(e,t,n,s){r("js",e,t,n,s)}}}(this.document);</script>
 
+	<script type="text/javascript" src="//e.jikexueyuan.com/static/js/login_register.min.js?t=1513326254000"></script>
         </div>
-        <script type="text/javascript">LazyLoad=function(e){function t(t,n){var s,r=e.createElement(t);for(s in n)n.hasOwnProperty(s)&&r.setAttribute(s,n[s]);return r}function n(e){var t,n,s=i[e];s&&(t=s.callback,n=s.urls,n.shift(),u=0,n.length||(t&&t.call(s.context,s.obj),i[e]=null,f[e].length&&r(e)))}function s(){var t=navigator.userAgent;o={async:e.createElement("script").async===!0},(o.webkit=/AppleWebKit\//.test(t))||(o.ie=/MSIE|Trident/.test(t))||(o.opera=/Opera/.test(t))||(o.gecko=/Gecko\//.test(t))||(o.unknown=!0)}function r(r,u,h,g,d){var p,y,m,b,k,v,j=function(){n(r)},w="css"===r,E=[];if(o||s(),u)if(u="string"==typeof u?[u]:u.concat(),w||o.async||o.gecko||o.opera)f[r].push({urls:u,callback:h,obj:g,context:d});else for(p=0,y=u.length;y>p;++p)f[r].push({urls:[u[p]],callback:p===y-1?h:null,obj:g,context:d});if(!i[r]&&(b=i[r]=f[r].shift())){for(l||(l=e.head||e.getElementsByTagName("head")[0]),k=b.urls,p=0,y=k.length;y>p;++p){if(v=k[p],w?m=o.gecko?t("style"):t("link",{href:v,rel:"stylesheet"}):(m=t("script",{src:v}),m.async=!1),m.className="lazyload",m.setAttribute("charset","utf-8"),o.ie&&!w&&"onreadystatechange"in m&&!("draggable"in m))m.onreadystatechange=function(){/loaded|complete/.test(m.readyState)&&(m.onreadystatechange=null,j())};else if(w&&(o.gecko||o.webkit))if(o.webkit){var T;if(b.urls[p]=m.href,T=c()){p--,y=k.length;continue}}else m.innerHTML='@import "'+v+'";',a(m);else m.onload=m.onerror=j;E.push(m)}var A=document.createDocumentFragment();for(p=0,y=E.length;y>p;++p)A.appendChild(E[p]);var x;return"css"===r?x=l:"js"===r&&(x=document.getElementById("pages-container")||l),x.appendChild(A),E}}function a(e){var t;try{t=!!e.sheet.cssRules}catch(s){return u+=1,void(200>u?setTimeout(function(){a(e)},50):t&&n("css"))}n("css")}function c(){var e,t=i.css,s=!1;if(t){for(e=h.length;--e>=0;)if(h[e].href===t.urls[0]){s=!0,n("css");break}u+=1,t&&(200>u?setTimeout(c,50):n("css"))}return s}var o,l,i={},u=0,f={css:[],js:[]},h=e.styleSheets;return{css:function(e,t,n,s){r("css",e,t,n,s)},js:function(e,t,n,s){r("js",e,t,n,s)}}}(this.document);</script>
-
+     
      <script type="text/javascript">var _ready = false;_list = [];_when = function(cb) {_ready?cb():_list.push(cb);};LazyLoad.js(['https://s1.jikexueyuan.com/common/js/TweenMax.min_5a7da72.js', 'https://s1.jikexueyuan.com/common/pkg/common_sync0_libs_978038b.js', 'https://s1.jikexueyuan.com/common/js/setcookie_51991d5.js', 'https://s1.jikexueyuan.com/common/js/swfobject_5fb5452.js', 'https://s1.jikexueyuan.com/common/pkg/common_sync1_libs_e7422e7.js', 'https://s1.jikexueyuan.com/index/js/swiper_3a71085.js', 'https://s1.jikexueyuan.com/index/widget/banner/banner_5545b73.js', 'https://s1.jikexueyuan.com/index/widget/subscription/subscription_a776ed5.js', 'https://s1.jikexueyuan.com/index/widget/category/category_0baf6ef.js', 'https://s1.jikexueyuan.com/index/widget/story/story_bcd7ee4.js'], function () {!function() {
    require("index:widget/banner/banner.js").init();
 }();
@@ -2634,4 +2643,12 @@ function gotop(){var html=$("#gototop");if($(window).scrollTop()<=0){$("#gototop
    require("index:widget/story/story.js").init();
 }();;_ready=true;var _item; while((_item=_list.shift())){_item();}});</script>
 
-<link type="text/css" href="http://g.alicdn.com/sd/ncpc/nc.css?t=20170228" disabled=""><script type="text/javascript" src="http://g.alicdn.com/sd/ncpc/nc.js?t=20170228"></script></body></html>
+
+<script language="javascript" type="text/javascript">
+
+function webIntent()
+{
+window.location.href="/JSONFormat.html";
+}
+</script>
+</body></html>

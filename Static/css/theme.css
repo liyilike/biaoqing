@@ -3692,13 +3692,13 @@ button.close {
 
 .bg-primary {
   
-  background-color: rgba(#007bff);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#007bff, endColorstr=#663399);
-    background-image: -moz-linear-gradient(left bottom, #007bff 10%, #663399 100%);
-    background-image: -webkit-linear-gradient(left bottom, #007bff 10%, #663399 100%);
-    background-image: -ms-linear-gradient(left bottom, #007bff 10%, #663399 100%);
-    background-image: linear-gradient(left bottom, #007bff 10%, #663399 100%);
-    background-image: -o-linear-gradient(left bottom, #007bff 10%, #663399 100%);
+  background-color: rgba(#9dc852);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#9dc852, endColorstr=#1d953f);
+    background-image: -moz-linear-gradient(left bottom, #9dc852 10%, #1d953f 100%);
+    background-image: -webkit-linear-gradient(left bottom, #9dc852 10%, #1d953f 100%);
+    background-image: -ms-linear-gradient(left bottom, #9dc852 10%, #1d953f 100%);
+    background-image: linear-gradient(left bottom, #9dc852 10%, #1d953f 100%);
+    background-image: -o-linear-gradient(left bottom, #9dc852 10%, #1d953f 100%);
     background-image: -webkit-gradient(linear, left bottom, right top, color-stop(10%,#9dc852), color-stop(100%,#1d953f));
   
   }
