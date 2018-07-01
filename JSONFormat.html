@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="utf-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+  <title>JSON格式化整理缩进 - 1tool第一在线工具网1tool.org</title> 
+  <link rel="shortcut icon"  href="http://ww1.sinaimg.cn/large/005GPQHggy1fsl2qxpua4j303k03kwec.jpg">
+  <link rel="Bookmark"   href="http://ww1.sinaimg.cn/large/005GPQHggy1fsl2qxpua4j303k03kwec.jpg">
+  <meta name="keywords" content="JSON格式化,JSON整理,JSON缩进"/>
+  <meta name="description" content="Android开发工具下载,安卓开发工具下载,androidstudio各个版本下载大全" /> 
+  <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" /> 
+  <link href="/Static/css/theme.css" rel="stylesheet" /> 
+ <!-- <link href="/Static/css/template.css" rel="stylesheet" /> -->
+  
+  
+  <script src="/Mode/JSONFormat/c.js" type="text/javascript"></script>
+   <link href="/Mode/JSONFormat/s.css" type="text/css" rel="stylesheet"/>
+    <link href="/Static/css/JSONFormattheme.css" rel="stylesheet">
+    <link href="/Static/css/JSONFormattemplate.css" rel="stylesheet">
+  
+ <body data-spy="scroll" data-target="#navbar1" data-offset="60"> 
+ 
+  
+  
+  
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow" id="navbar1"> 
+   <div class="container"> 
+    <a class="navbar-brand mr-1 mb-1 mt-0" href="/">1Tool 第一在线工具网</a> 
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar"> <span class="navbar-toggler-icon"></span> </button> 
+    <div class="navbar-collapse collapse justify-content-center" id="collapsingNavbar"> 
+    
+     <ul class="navbar-nav ml-auto"> 
+     <!--
+      <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="layoutDd" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Android SDK开发工具</a> 
+       <div class="dropdown-menu" aria-labelledby="layoutDd"> 
+        <a class="dropdown-item px-2" href="/">Android Studio</a> 
+        <div class="dropdown-divider"></div> 
+        <a class="dropdown-item px-2" href="/ndk.html">NDK</a> 
+        <div class="dropdown-divider"></div> 
+        <a class="dropdown-item px-2" href="/jdk.html">JDK</a> 
+       </div> </li>--> 
+       
+       
+      <li class="nav-item dropdown"> 
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDd" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">广告赞助</a> 
+       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDd"> 
+        <a class="dropdown-item px-2" target="_blank"  href="https://developer.apktool.net/more/index.html">开发者软件</a> 
+        <div class="dropdown-divider"></div> 
+       </div> </li> 
+     </ul> 
+     
+     
+    </div> 
+   </div> 
+  </nav> 
+
+
+  <main> 
+   <div class="container mt-3">
+        <div class="card h-100"> 
+         <div class="card-body d-flex flex-column justify-content-center"> 
+  
+  <style>
+  .row{
+ 
+   vertical-align: middle;
+}
+  </style>
+       
+          
+          
+          <div class="HeadersRow">
+
+  <textarea id="RawJson">{"name":"BeJson","url":"http://www.bejson.com","page":88,"isNonProfit":true,"address":{"street":"科技园路.","city":"江苏苏州","country":"中国"},"links":[{"name":"Google","url":"http://www.google.com"},{"name":"Baidu","url":"http://www.baidu.com"},{"name":"SoSo","url":"http://www.SoSo.com"}]}</textarea>
+</div>
+<div class ="mb-2" >
+
+
+
+
+  <input type="Button" value="格式化" class="btn btn-primary align-bottom btn-sm mr-1" style=""  onclick="Process()"/>
+  <span id="TabSizeHolder">
+    缩进量
+    <select id="TabSize" onchange="TabSizeChanged()">
+      <option value="1">1</option>
+      <option value="2" selected="true">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+    </select>
+  </span>
+  
+
+  
+  <div class="custom-control custom-checkbox d-inline">
+                                  <input type="checkbox"  class="custom-control-input" id="QuoteKeys" onclick="QuoteKeysClicked()" checked="true">
+                                  <label class="custom-control-label"  for="QuoteKeys">引号</label>
+                                </div>
+  
+  
+ 
+  <a href="javascript:void(0);" onclick="SelectAllClicked()">全选</a>
+  &nbsp;
+ 
+  
+    <div class="custom-control custom-checkbox d-inline">
+                                  <input type="checkbox"  class="custom-control-input" id="CollapsibleView" onclick="CollapsibleViewClicked()" checked="true">
+                                  <label class="custom-control-label" for="CollapsibleView">显示控制</label>
+                                </div>
+  
+  <span id="CollapsibleViewDetail">
+    <a href="javascript:void(0);" onclick="ExpandAllClicked()">展开</a>
+    <a href="javascript:void(0);" onclick="CollapseAllClicked()">叠起</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(3)">2级</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(4)">3级</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(5)">4级</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(6)">5级</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(7)">6级</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(8)">7级</a>
+    <a href="javascript:void(0);" onclick="CollapseLevel(9)">8级</a>
+  </span>
+</div>
+<div id="Canvas" class="Canvas container"></div>
+
+</div>
+</div>
+</div>
+
+
+
+<script type="text/javascript" src="/Mode/JSONFormat/m.js"></script>
+          
+  
+  
+  
+  
+    
+   <section id="buttons" class="pb-5"> 
+   </section> 
+
+  </main> 
+ <style>.widget{color:#858585}footer{padding:50px 0 0 0;background-color:#3e464c}#sub-footer{text-shadow:none;color:#f5f5f5;padding:0;padding-top:20px;margin:20px 0 0 0;background:#2f363c}footer ul.link-list li a{color:#8C8C8C}footer a{color:#bbb}footer a:hover{color:#bbb}ul.link-list{margin:0;padding:0;list-style:none}.widgetheading{width:100%;padding:0;font-weight:700}footer h1,footer h2,footer h3,footer h4,footer h5,footer h6{color:#e0e0e0}
+ </style>
+  <footer> 
+   <div class="container"> 
+    <div class="row"> 
+     <div class="col-md-3 col-3"> 
+      <div class="widget"> 
+       <h5 class="widgetheading">友情链接</h5> 
+       <ul class="link-list"> 
+        <li><a href="/" rel="nofollow">apktool开发工具网</a></li> 
+        <li><a href="http://www.qutvb.com/">趣TV电视直播网</a></li> 
+       </ul> 
+      </div> 
+     </div> 
+     <div class="col-md-3 col-3"> 
+      <div class="widget"> 
+       <h5 class="widgetheading">技术支持</h5> 
+       <ul class="link-list"> 
+        <li>Hosted by <a class="text-white" href="https://pages.coding.me" style="font-weight: bold" rel="nofollow">Coding Pages</a></li> 
+        <li>Github</li> 
+       </ul> 
+      </div> 
+     </div> 
+     <div class="col-md-3 col-3"> 
+      <div class="widget"> 
+       <h5 class="widgetheading">赞助商链接</h5> 
+       <ul class="link-list"> 
+        <li><a href="http://www.qutvb.com/" rel="nofollow">趣TV电视直播网</a></li> 
+       </ul> 
+      </div> 
+     </div> 
+     <div class="col-md-3 col-3"> 
+      <div class="widget"> 
+       <h5 class="widgetheading">赞助商淘宝广告</h5> 
+       <ul class="link-list"> 
+        <li><a href="#">买正品万代玩具-点此</a></li> 
+        <li><a href="#">买原装进口狗粮-点此</a></li> 
+       </ul> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   
+   <div id="sub-footer"> 
+    <div class="container"> 
+     <div class="row"> 
+      <div class="col-lg-12"> 
+       <div class="copyright"> 
+        <p><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1274015149'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/z_stat.php%3Fid%3D1274015149%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script><a target="_blank" href="/"></a> </p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div>
+ 
+  </footer> 
+  <script src="https://lib.sinaapp.com/js/jquery/3.1.0/jquery-3.1.0.min.js"></script> 
+  <script src="https://cdn.bootcss.com/popper.js/1.14.3/esm/popper.js"></script> 
+  <script src="https://cdn.bootcss.com/bootstrap/4.1.1/js/bootstrap.min.js"></script> 
+  <!--
+    <script src="scripts.js"></script>
+    -->  
+ </body>
+</html>
