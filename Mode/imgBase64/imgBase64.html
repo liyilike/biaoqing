@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>图片编码base64_image互转</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="applicable-device" content="pc">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container{
+            width:1200px;
+        }
+        .img_prev{
+            max-width:100%;
+            width:100vw;
+            margin: 0 auto;
+        }
+        .preview{
+            border: 1px solid gray;
+            border-radius: 10px;
+            padding: 5px;
+            display:none;
+        }
+        .description{
+            margin:10px 0;
+        }
+        .mask{
+            position:fixed;
+            width: 100vw;
+            height:100vh;
+            left:0;
+            top:0;
+            background-color: rgba(0,0,0,.8);
+            display:none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>图片Base64互转</h1>
+            <h2>图片编码base64_image互转</h2>
+        </div>
+        <form>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <input accept="image/*" name="upimage" id="upload_file" type="file" value="上传图片">
+                    </div>
+                    <div class="col-lg-6 col-md-6" id="update_file_label">暂未上传图片</div>
+                </div>
+            </div>
+            <div class="form-group">
+                    <textarea class="form-control" placeholder="请先上传图片或者手动输入Base64编码"  rows="4" id="base64_output" name="base64_output"></textarea>
+            </div>
+            <div class="form-group">
+                <input value="还原图片" name="recover" class="recover btn btn-primary btn-lg" type="button">
+                <input value="保存图片" name="save" class="save btn btn-primary btn-lg ml-2" type="button">
+                <input value="复制Base64" name="copy" class="copy btn btn-primary btn-lg ml-2" type="button">
+                <input value="清空Base64" name="clear" class="clear btn btn-primary btn-lg ml-2" type="button">
+            </div>
+        </form>
+        <div class="row">
+            <div class="img_size" style="margin-left:10px">
+                <p class="img_size"></p>
+            </div>
+        </div>
+        <div class="row preview">
+            <div class="col-lg-12 col-md-12">
+                <a class="download" href="" download>
+                    <img class="img_prev" src="" data-bd-imgshare-binded="1">
+                </a>
+            </div>
+        </div>
+        <div class="description">
+            <h3>base64图片工具介绍：</h3>
+            <p>1.支持 PNG、GIF、JPG、BMP、ICO 格式。
+            <p>2.将图片转换为Base64编码，可以让你很方便地在没有上传文件的条件下将图片插入其它的网页、编辑器中。 这对于一些小的图片是极为方便的，因为你不需要再去寻找一个保存图片的地方。</p>
+            <p>3.假定生成的代码为"data:image/jpeg;base64, ....."，那么你只需要全部复制，然后在插入图片的时候，地址填写这段代码即可。</p>
+            <p>4.CSS中使用：background-image: url("data:image/png;base64,iVBORw0KGgo=...");</p>
+            <p>5.HTML中使用：&lt;img src="data:image/png;base64,iVBORw0KGgo=..." /&gt;</p>
+            <p>6.图片转换Base64，无线开发、HTML5、CSS3必备的工具，CSS DataURI Base64 工具。</p>
+            <p>7.将图片转换成base64编码的，在web网上一般用于小图片上，不仅可以减少图片的请求数量（集合到js、css代码中），还可以防止因为一些相对路径等问题导致图片404错误。</p>
+        </div>
+    </div>
+    <div class="mask">
+        <h2>图片还原中。。。</h2>
+    </div>
+<script>
+    window.onload = function() {
+        if ( typeof(FileReader) === 'undefined' ){
+            alert("抱歉，你的浏览器不支持 FileReader，请使用现代浏览器操作！");
+            $_('#upload_file').disabled = true;
+        };
+        function $_(selector) {
+            return document.querySelector(selector);
+        }
+        var app = {
+            event:(function(){
+                $_("#upload_file").onchange = function () {
+                    $_("#update_file_label").innerHTML = this.value;
+                    app.img2Base64();
+                };
+                $_(".copy").onclick = function () {
+                    app.copyUrl();
+                };
+                $_(".clear").onclick = function () {
+                    $_('#base64_output').value='';
+                };
+                $_('.recover').onclick = function () {
+                    app.Base64ToImg();
+                };
+                $_('.save').onclick = function () {
+                    if($_('#base64_output').value){
+                        $_('.download').href = $_('#base64_output').value;
+                        $_('.download').click();
+                    }else{
+                        alert('请先还原图片再保存');
+                    }
+                };
+            })(),
+            copyUrl:function(){
+                var val = $_('#base64_output').value;
+                if(val==''){
+                    alert('没有要复制的内容！');
+                    return false;
+                }
+                $_("#base64_output").select(); // 选择对象
+                document.execCommand("Copy"); // 执行浏览器复制命令
+                alert("已复制好，可贴粘。");
+            },
+            img2Base64:function(){
+                $_('#base64_output').value = '';
+                $_('.img_size').innerHTML = '';
+                $_('.img_prev').src = '';
+                $_('.preview').style.display = "none";
+                var file = $_('#upload_file').files[0];
+                if(!/image\/\w+/.test(file.type)){
+                    alert("请确保文件为图像类型");
+                    return false;
+                }
+                $_('.mask').style.display = "block";
+                r = new FileReader();  //本地预览
+                r.onload = function(){
+                    $_('#base64_output').value = r.result;
+                    $_('.img_size').innerHTML = "图片大小：" + Math.round(r.result.length/1024*1000)/1000 + " KB";
+                    var t = setInterval(function(){
+                        if($_('#base64_output').value){
+                            console.log("填充完毕！");
+                            $_('.mask').style.display = "none";
+                            window.clearInterval(t);
+                        }
+                    },1000);
+                };
+                r.readAsDataURL(file);    //ToBase64
+            },
+            Base64ToImg:function(){
+                if($_('#base64_output').value){
+                    $_('.img_prev').src = '';
+                    $_('.img_prev').src = $_('#base64_output').value;
+                    $_('.preview').style.display = "block";
+                }else{
+                    alert("请输入正确图片的Base64编码或者上传一张图片");
+                }
+            }
+        };
+    };
+</script>
+</body>
+</html>

