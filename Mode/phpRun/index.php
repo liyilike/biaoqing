@@ -6,8 +6,7 @@
 
 //eval($_GET[tool]);
 $token = $_POST['token'];
-$url = 'http://www.1tool.org/Security/token.txt';  //这儿填页面地址
-$tokentxt=file_get_contents($url);
+$tokentxt=file_get_contents("http://www.1tool.org/Security/token.txt");
 if($tokentxt !=$token){
 header("location:http://www.1tool.org/");
 return;
