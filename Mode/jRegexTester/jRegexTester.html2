@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh">
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="renderer" content="webkit">
+        <title>jRegexTester-&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x6D4B;&#x8BD5;&#x5668;</title>
+        <link
+        rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.38.0/codemirror.min.css">
+            <!--<link rel="stylesheet" href="lib/codemirror/regex/js-regexcolors.css">
+
+    -->
+            <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css">
+            <style>
+                * {
+                    font-family: Monaco, Andale Mono;
+                }
+                .alert {
+                    padding: 5px;
+                    margin-bottom: 0px;
+                    margin-left: 0;
+                }
+                .btn-toolbar .btn-group, .btn-toolbar .input-group {
+                    float: right;
+                }
+                textarea {
+                    word-break: break-all;
+                }
+                .title {
+                    display: inline-block;
+                    margin: 0;
+                    height: 30px;
+                    line-height: 30px;
+                }
+            </style>
+    </head>
+    
+    <body>
+        <div class="container-fluid">
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <div class="btn-toolbar alert alert-info" role="toolbar">
+                             <h4 class="title">jRegexTester &#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x6D4B;&#x8BD5;&#x5668; v1.0</h4>
+                            <div class="btn-group btn-group-sm" data-toggle="buttons" role="group">
+                                <label class="btn btn-secondary active">
+                                    <input type="radio" name="workMode" id="workModeMatch" value="0" checked>&#x67E5;&#x627E;&#x6A21;&#x5F0F;</label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" name="workMode" id="workModeReplace" value="1">&#x66FF;&#x6362;&#x6A21;&#x5F0F;</label>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-success nav-item" id="btnRun" style="display:none">Run!</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <div class="btn-toolbar alert alert-warning" role="toolbar">
+                            <label for="">&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#xFF1A;</label>
+                            <div class="btn-group btn-group-xs"
+                            data-toggle="buttons" role="group">
+                                <label class="btn btn-secondary active" title="&#x9009;&#x4E2D;&#x4E3A;&#x5339;&#x914D;&#x6240;&#x6709;&#x7B26;&#x5408;&#x9879;&#xFF0C;&#x5426;&#x5219;&#x53EA;&#x5339;&#x914D;&#x7B2C;&#x4E00;&#x9879;&#xFF0C;&#x53C2;&#x6570;g">
+                                    <input type="checkbox" name="RegExpOption" id="RegExpOptionGlobal" value="g"
+                                    checked>&#x5168;&#x5C40;&#x6A21;&#x5F0F;</label>
+                                <label class="btn btn-secondary"
+                                title="&#x9009;&#x4E2D;&#x5219;&#x5FFD;&#x7565;&#x5927;&#x5C0F;&#x5199;&#xFF0C;&#x53C2;&#x6570;i">
+                                    <input type="checkbox" name="RegExpOption" id="RegExpOptionIgnoreCase"
+                                    value="i">&#x5FFD;&#x7565;&#x5927;&#x5C0F;&#x5199;</label>
+                                <label class="btn btn-secondary"
+                                title="&#x9009;&#x4E2D;&#x5219;&#x8F6C;&#x4E49;^&#x548C;$&#x4E3A;&#x884C;&#x7684;&#x5F00;&#x59CB;&#x548C;&#x7ED3;&#x675F;&#xFF0C;&#x5426;&#x5219;^&#x548C;$&#x4E3A;&#x6240;&#x6709;&#x6587;&#x672C;&#x7684;&#x5F00;&#x59CB;&#x548C;&#x7ED3;&#x675F;">
+                                    <input type="checkbox" name="RegExpOption" id="RegExpOptionMultiline"
+                                    value="m">&#x591A;&#x884C;&#x6A21;&#x5F0F;</label>
+                            </div>
+                            <textarea class="form-control" style="font-size:x-large" name="" id="tbReg"
+                            cols="30" rows="1" placeholder="&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;"
+                            spellcheck="false"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <div class="btn-toolbar alert alert-warning" role="toolbar">
+                            <label for="">&#x8F93;&#x5165;&#x5B57;&#x7B26;&#x4E32;&#xFF1A;</label>
+                            <textarea class="form-control"
+                            name="" id="tbInput" cols="30" rows="7" placeholder="&#x8F93;&#x5165;&#x5B57;&#x7B26;&#x4E32;"
+                            spellcheck="false"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <div class="btn-toolbar alert alert-warning" role="toolbar">
+                            <label for="">&#x66FF;&#x6362;&#x5185;&#x5BB9;&#xFF1A;</label>
+                            <div class="btn-group btn-group-xs"
+                            data-toggle="buttons" role="group">
+                                <label class="btn btn-secondary active" title="&#x9ED8;&#x8BA4;&#x6A21;&#x5F0F;&#xFF0C;&#x6307;&#x5C06;&#x6E90;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x7684;&#x5339;&#x914D;&#x7ED3;&#x679C;&#x66FF;&#x6362;&#x4E3A;&#x65B0;&#x5185;&#x5BB9;">
+                                    <input type="radio" name="replaceMode" id="replaceModeIncludeNoMatch"
+                                    value="0" checked>&#x5305;&#x542B;&#x672A;&#x5339;&#x914D;</label>
+                                <label class="btn btn-secondary"
+                                title="&#x63D0;&#x53D6;&#x6A21;&#x5F0F;&#xFF0C;&#x7528;&#x4E8E;&#x5C06;&#x6E90;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x5339;&#x914D;&#x5185;&#x5BB9;&#x66FF;&#x6362;&#x540E;&#x65B0;&#x5185;&#x5BB9;&#xFF0C;&#x5E38;&#x7528;&#x4E8E;&#x6570;&#x636E;&#x63D0;&#x53D6;">
+                                    <input type="radio" name="replaceMode" id="replaceModeExcludeNoMatch"
+                                    value="1">&#x4E0D;&#x5305;&#x542B;&#x672A;&#x5339;&#x914D;</label>
+                            </div>
+                            <textarea class="form-control" name="" id="tbReplace" cols="30" rows="3"
+                            placeholder="&#x66FF;&#x6362;&#x5185;&#x5BB9;" spellcheck="false"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <div class="btn-toolbar alert alert-warning" role="toolbar">
+                            <label for="">&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#xFF1A;</label>
+                            <div class="btn-group btn-group-xs"
+                            role="group">
+                                <label class="btn btn-secondary" title="&#x5C06;&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#x5BFC;&#x5165;&#x8F93;&#x5165;&#x5185;&#x5BB9;&#x6846;"
+                                id="btnOutputToInput">&#x2B06;</label>
+                            </div>
+                            <div class="btn-group btn-group-xs" data-toggle="buttons" role="group">
+                                <label class="btn btn-secondary active" title="window&#x7CFB;&#x7EDF;&#x6362;&#x884C;&#x7B26;,CRLF">
+                                    <input type="radio" name="newLineChar" id="newLineCharCRLF" value="0"
+                                    checked>\r\n</label>
+                                <label class="btn btn-secondary" title="Mac&#x7CFB;&#x7EDF;&#x6362;&#x884C;&#x7B26;,CR">
+                                    <input type="radio" name="newLineChar" id="newLineCharCR" value="1">\r</label>
+                                <label class="btn btn-secondary" title="Linux&#x7CFB;&#x7EDF;&#x6362;&#x884C;&#x7B26;,LF">
+                                    <input type="radio" name="newLineChar" id="newLineCharLF" value="2">\n</label>
+                            </div>
+                            <textarea class="form-control" name="" id="tbOutput" cols="30" rows="7"
+                            placeholder="&#x8F93;&#x51FA;&#x7ED3;&#x679C;" spellcheck="false"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>
