@@ -82,7 +82,7 @@
     function generateGif (finish) {
       var gif = new GIF({
         workers: 2,
-        workerScript: '/Mode/sorryGif/scripts/libs/gif.worker.js'
+        workerScript: './scripts/libs/gif.worker.js'
       })
       currentFrame = 0
       for (var i = 0; i < data.totalFrame; i++) {
