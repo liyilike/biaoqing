@@ -1,4 +1,4 @@
- 
+
   /*  css初始化重制*/
   button::-moz-focus-inner,
 
@@ -13,24 +13,24 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 border: none;
 
 }
-  
+
   /*  css初始化重制*/
-  
+
   /* 我自己添加的css */
-  
+
   .img-auto{
   height:auto;
   width:100%;
   }
-  
-  
+
+
   /* 我自己添加的css */
-  
-  
-  
-  
+
+
+
+
 /* 原本css的覆盖写入 */
-  
+
   .mian_top {
       background-image: url(/);
       /*
@@ -182,7 +182,7 @@ border: none;
     }
 
 p:first-letter {
-     padding-left: 0px; 
+     padding-left: 0px;
 }
 
 
@@ -191,7 +191,7 @@ p:first-letter {
 
 
   @media screen and (max-width: 800px)  {
-     
+
      .nry_bt .nry_bt_text {
     margin-left: 10px;
     font-family: "\u9ed1\u4f53";
@@ -202,9 +202,12 @@ p:first-letter {
     display: inline-block;
     overflow: hidden;
 }
-  
+
   }
 
+  #main_shouye_anniu a{
+    font-size: 14px;
+  }
 
     /* 原本css的覆盖写入 */
 
