@@ -75,4 +75,3 @@ jQuery.rnd = function(m,n) {
 }
 
 initparticles();
-
