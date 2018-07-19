@@ -274,9 +274,7 @@
 		document.addEventListener('mouseover', keyDown, false);
 		return false;
 	}
-		/*	
-			toggleCalc(false);
-		*/	
+
 	document.addEventListener('mouseup', function(e) {
 		var event = e || window.event,
 			target = getTargetKey(event.target),
