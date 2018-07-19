@@ -1511,13 +1511,18 @@ body .particletext.sunbeams>.particle {
   color: #fff;
 }
 
-.ml-2, .mx-2 {
+.ml-2 {
   margin-left: .5rem !important;
 }
 
-.ml-3, .mx-3 {
+.ml-3 {
   margin-left: 1rem !important;
 }
+
+.mt-3{
+  margin-top: 1rem !important;
+}
+
 
 .row {
   display: -ms-flexbox;
@@ -1631,6 +1636,14 @@ body .particletext.sunbeams>.particle {
 #main_shouye_anniu a {
   font-size: 14px;
 }
+
+#main #main_left_full {
+    float: left;
+    width: 1040px;
+    display: block;
+    overflow: hidden;
+}
+
 
 /* 我自己添加的css */
 
