@@ -1,4 +1,5 @@
 <?php 
+	
 //echo  $_SERVER['SERVER_NAME'];
 if(!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'],'1tool.org') === false){
  exit;
@@ -34,7 +35,7 @@ $result = file_get_contents($f);
 $result = str_replace("xlphp.net","1tool.org",$result);
 $result = str_replace("/xl_22311638","",$result);
 $result = str_replace("/cache","",$result);
-$result = str_replace("/php-7.fast-page.org","",$result);
+$result = str_replace("fast-page.org","1tool.org",$result);
 //$result = preg_replace("/([\s\S]*?)/","",$str);
 echo $result;
 //echo $_SERVER['HTTP_REFERER'];
