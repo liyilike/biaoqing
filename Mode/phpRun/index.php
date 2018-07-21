@@ -4,7 +4,8 @@ if(!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'],'1tool.or
   exit;
 }
 
-$text = '<?php'.$_POST[tool].'?>';
+
+$text = $_POST[tool];
 //检测非法函数
 $myArray = array("fopen","fwrite","mkdir","rmdir","unlink","eval");
 foreach($myArray as $key=>$val) {
