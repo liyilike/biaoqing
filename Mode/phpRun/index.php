@@ -1,7 +1,7 @@
 <?php 
-
+//echo  $_SERVER['SERVER_NAME'];
 if(!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'],'1tool.org') === false){
-  exit;
+ exit;
 }
 
 
@@ -25,12 +25,11 @@ function isExist($file) {
 
 isExist('/cache/');
 
-
 $randData = rand(1,1000);
 $fp = fopen($_SERVER['DOCUMENT_ROOT'] .'/cache/'.$randData.'.php', "w");
 fwrite($fp, $text);
 fclose($fp);
-$f = $_SERVER['SERVER_NAME']."/cache/".$randData.".php";
+$f = "http://".$_SERVER['SERVER_NAME']."/cache/".$randData.".php";
 $result = file_get_contents($f);
 $result = str_replace("xlphp.net","1tool.org",$result);
 $result = str_replace("/xl_22311638","",$result);
