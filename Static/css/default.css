@@ -1499,34 +1499,32 @@ body .particletext.sunbeams>.particle {
 /* logo的css特效 */
 
 /* bootstrap扣出来的css */
-:root {
-    --blue: #007bff;
-    --indigo: #6610f2;
-    --purple: #6f42c1;
-    --pink: #e83e8c;
-    --red: #dc3545;
-    --orange: #fd7e14;
-    --yellow: #ffc107;
-    --green: #28a745;
-    --teal: #20c997;
-    --cyan: #17a2b8;
-    --white: #fff;
-    --gray: #6c757d;
-    --gray-dark: #343a40;
-    --primary: #007bff;
-    --secondary: #6c757d;
-    --success: #28a745;
-    --info: #17a2b8;
-    --warning: #ffc107;
-    --danger: #dc3545;
-    --light: #f8f9fa;
-    --dark: #343a40;
+
+.text-left {
+  text-align: left !important;
 }
 
+.text-right {
+  text-align: right !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+
+.align-baseline    { vertical-align: baseline !important; } // Browser default
+.align-top         { vertical-align: top !important; }
+.align-middle      { vertical-align: middle !important; }
+.align-bottom      { vertical-align: bottom !important; }
+.align-text-bottom { vertical-align: text-bottom !important; }
+.align-text-top    { vertical-align: text-top !important; }
+
+
 .btn-warning {
-    color: #212529;
-    background-color: #ffc107;
-    border-color: #ffc107;
+  color: #212529;
+  background-color: #ffc107;
+  border-color: #ffc107;
 }
 
 .btn-warning:hover {
@@ -1535,9 +1533,9 @@ body .particletext.sunbeams>.particle {
 }
 
 .btn-secondary {
-    color: #fff;
-    background-color: #6c757d;
-    border-color: #6c757d;
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
 }
 
 .btn-secondary:hover {
@@ -1556,6 +1554,19 @@ body .particletext.sunbeams>.particle {
   color: #fff;
 }
 
+.mr-1 {
+    margin-right: 0.25rem !important;
+}
+
+
+.ml-1 {
+    margin-left: 0.25rem !important;
+}
+
+.ml-2 {
+  margin-left: .5rem !important;
+}
+
 .ml-2 {
   margin-left: .5rem !important;
 }
@@ -1564,10 +1575,9 @@ body .particletext.sunbeams>.particle {
   margin-left: 1rem !important;
 }
 
-.mt-3{
+.mt-3 {
   margin-top: 1rem !important;
 }
-
 
 .row {
   display: -ms-flexbox;
@@ -1580,8 +1590,8 @@ body .particletext.sunbeams>.particle {
   position: relative;
   width: 100%;
   min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
+  /* padding-right: 15px;
+  padding-left: 15px; */
 }
 
 .col {
@@ -1612,6 +1622,22 @@ body .particletext.sunbeams>.particle {
   border-color: #27a2fc;
 }
 
+.btn-primary:hover {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+
+.btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus, .show > .btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(39, 162, 252, 0.5);
+}
+
+
+
+
+
+
 .btn {
   display: inline-block;
   font-weight: 400;
@@ -1630,14 +1656,32 @@ body .particletext.sunbeams>.particle {
   transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
+
+
+.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split {
+  padding-right: 0.375rem;
+  padding-left: 0.375rem;
+}
+
+.btn-sm, .btn-group-sm > .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+
+
 /* bootstrap扣出来的css */
 
 /* 我自己添加的css */
+
 
 .img-auto {
   height: auto;
   width: 100%;
 }
+
 
 .mian_top {
   /*
@@ -1682,20 +1726,19 @@ body .particletext.sunbeams>.particle {
   font-size: 14px;
 }
 
-
-
 #main #main_left_full {
-    float: left;
-    width: 1040px;
-    display: block;
-    overflow: hidden;
+  float: left;
+  width: 1040px;
+  display: block;
+  overflow: hidden;
 }
 
 @media screen and (max-width: 800px) {
-#main #main_left_full {
+  #main #main_left_full {
     width: 100%;
+  }
 }
-}
+
 /* 我自己添加的css */
 
 /* 图标的css字体修改 */
