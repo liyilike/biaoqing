@@ -30,7 +30,7 @@ $randData = rand(1,1000);
 $fp = fopen($_SERVER['DOCUMENT_ROOT'] .'/cache/'.$randData.'.php', "w");
 fwrite($fp, $text);
 fclose($fp);
-$f = "http://php-7.fast-page.org/cache/".$randData.".php";
+$f = $_SERVER['SERVER_NAME']."/cache/".$randData.".php";
 $result = file_get_contents($f);
 $result = str_replace("xlphp.net","1tool.org",$result);
 $result = str_replace("/xl_22311638","",$result);
