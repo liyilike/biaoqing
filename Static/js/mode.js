@@ -167,7 +167,7 @@ function drawCanvas(dataArr) {
     var canvasData = c.toDataURL("image/jpeg", 1);
     return canvasData;
   } catch (e) {
-    return true;
+    return e;
   }
 }
 
