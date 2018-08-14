@@ -339,7 +339,7 @@ $("#build").click(function() {
   var gif = new GIF({
     workers: 2,
     quality: 10,
-    workerScript: 'http://localhost:7777/Static/js/gif.worker.js'
+    workerScript: '/Static/js/gif.worker.js'
   });
 
 
