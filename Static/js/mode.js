@@ -1,5 +1,126 @@
 /* 注释动画 */
-var DomAnimator=(function(){var currentFrame=0;var frames=[];var nodes=[];var multiNode=!!!window.chrome;var interval=null;var defaultTime=500;var attached=false;var whiteSpaceString="\u00A0";function extend(target,source){for(var key in source){if(!(key in target)){target[key]=source[key]}}return target}function parseMultilineFrame(frame){if(multiNode){return swapWhitespace(frame)}else{return padString(frame.join("\n"))}}function parseSingleLineFrame(frame){if(multiNode){return swapWhitespace(frame.split("\n"))}else{return padString(frame)}}function swapWhitespace(array){var i=0;for(i;i<array.length;i++){array[i]=array[i].replace(/ /g,whiteSpaceString)}return array}function animate(time){if(!time){time=defaultTime}if(frames.length===0){console.log("I need frames to animate. You can add them with .addFrame( string )");return}if(attached===false){attachToDocument()}interval=setInterval(function(){renderFrame()},time)}function renderFrame(){var frameData=frames[currentFrame];if(multiNode){var i=0;for(i;i<nodes.length;i++){nodes[i].nodeValue=frameData[i]}}else{nodes[0].nodeValue=frameData}currentFrame=currentFrame+1;if(currentFrame===frames.length){currentFrame=0}}function attachToDocument(){var head=document.head;var parent=head.parentNode;if(multiNode){var i=0;var totalNodes=frames[0].length;for(i;i<totalNodes;i++){var node=document.createComment("");nodes.push(node);parent.insertBefore(node,head)}}else{var node=document.createComment("");nodes.push(node);parent.insertBefore(node,head)}}function stop(){clearInterval(interval)}function addFrame(frameData){if(!frameData){frameData="no frame data"}var frameType=typeof(frameData);if(frameType==="object"){frames.push(parseMultilineFrame(frameData))}else{if(frameType==="string"){frames.push(parseSingleLineFrame(frameData))}}}function padString(string){return"\n"+string+"\n"}function main(){}return extend(main,{addFrame:addFrame,animate:animate,stop:stop})});
+var DomAnimator = (function() {
+  var currentFrame = 0;
+  var frames = [];
+  var nodes = [];
+  var multiNode = !!!window.chrome;
+  var interval = null;
+  var defaultTime = 500;
+  var attached = false;
+  var whiteSpaceString = "\u00A0";
+
+  function extend(target, source) {
+    for (var key in source) {
+      if (!(key in target)) {
+        target[key] = source[key]
+      }
+    }
+    return target
+  }
+
+  function parseMultilineFrame(frame) {
+    if (multiNode) {
+      return swapWhitespace(frame)
+    } else {
+      return padString(frame.join("\n"))
+    }
+  }
+
+  function parseSingleLineFrame(frame) {
+    if (multiNode) {
+      return swapWhitespace(frame.split("\n"))
+    } else {
+      return padString(frame)
+    }
+  }
+
+  function swapWhitespace(array) {
+    var i = 0;
+    for (i; i < array.length; i++) {
+      array[i] = array[i].replace(/ /g, whiteSpaceString)
+    }
+    return array
+  }
+
+  function animate(time) {
+    if (!time) {
+      time = defaultTime
+    }
+    if (frames.length === 0) {
+      console.log("I need frames to animate. You can add them with .addFrame( string )");
+      return
+    }
+    if (attached === false) {
+      attachToDocument()
+    }
+    interval = setInterval(function() {
+      renderFrame()
+    }, time)
+  }
+
+  function renderFrame() {
+    var frameData = frames[currentFrame];
+    if (multiNode) {
+      var i = 0;
+      for (i; i < nodes.length; i++) {
+        nodes[i].nodeValue = frameData[i]
+      }
+    } else {
+      nodes[0].nodeValue = frameData
+    }
+    currentFrame = currentFrame + 1;
+    if (currentFrame === frames.length) {
+      currentFrame = 0
+    }
+  }
+
+  function attachToDocument() {
+    var head = document.head;
+    var parent = head.parentNode;
+    if (multiNode) {
+      var i = 0;
+      var totalNodes = frames[0].length;
+      for (i; i < totalNodes; i++) {
+        var node = document.createComment("");
+        nodes.push(node);
+        parent.insertBefore(node, head)
+      }
+    } else {
+      var node = document.createComment("");
+      nodes.push(node);
+      parent.insertBefore(node, head)
+    }
+  }
+
+  function stop() {
+    clearInterval(interval)
+  }
+
+  function addFrame(frameData) {
+    if (!frameData) {
+      frameData = "no frame data"
+    }
+    var frameType = typeof(frameData);
+    if (frameType === "object") {
+      frames.push(parseMultilineFrame(frameData))
+    } else {
+      if (frameType === "string") {
+        frames.push(parseSingleLineFrame(frameData))
+      }
+    }
+  }
+
+  function padString(string) {
+    return "\n" + string + "\n"
+  }
+
+  function main() {}
+  return extend(main, {
+    addFrame: addFrame,
+    animate: animate,
+    stop: stop
+  })
+});
 
 
 
@@ -150,7 +271,7 @@ setTimeout(function() {
 /* 按钮生成下面全部 */
 var canvasHeight, canvasWidth, canvaFont, c, ctx;
 
-function initImg(imgObj,width, height, font) {
+function initImg(imgObj, width, height, font) {
   canvasHeight = height;
   canvasWidth = width;
   canvaFont = font;
@@ -158,9 +279,9 @@ function initImg(imgObj,width, height, font) {
   c = document.createElement('canvas');
   c.width = canvasWidth;
   c.height = canvasHeight;
-  ctx = c.getContext("2d");
+  ctx = c.getContext("2d").getImageData(0, 0, canvasWidth, canvasHeight);
   ctx = drawMode(ctx);
-  ctx.drawImage(imgObj, 0, 0);
+  // ctx.drawImage(imgObj, 0, 0);
   return ctx;
 }
 
@@ -169,7 +290,7 @@ function drawCanvas(dataArr) {
     ctx.fillText(dataArr[i]["text"], dataArr[i]["loc"][0], dataArr[i]["loc"][1]);
   }
   try {
-    var canvasData = c.toDataURL("image/jpeg", 1);
+    var canvasData = c.toDataURL("image/png", 1);
     return canvasData;
   } catch (e) {
     return e;
@@ -202,158 +323,199 @@ function drawMode(ctx) {
   return ctx;
 }
 
+
+
+
+
+
+
+
+
+
+// var ctx2;
+
+$("#build").click(function() {
+
+  var gif = new GIF({
+    workers: 2,
+    quality: 10,
+    workerScript: 'http://localhost:7777/Static/js/gif.worker.js'
+  });
+
+
+  ctx = initImg(document.getElementById("set"), 300, 216, "27px 'Microsoft Yahei'");
+  alert(ctx);
+
+  gif.addFrame(ctx, {
+  copy: true
+  });
+  gif.addFrame(ctx, {
+copy: true
+  });
+
+  gif.on('finished', function(blob) {
+     window.open(URL.createObjectURL(blob));
+  });
+
+  gif.render();
+});
+
+
+
+
+
 /* list的底部翻页*/
 function pageCon(options) {
-             var pagetext='';
-             if (options.pageNumber >= options.totalPages) {
-               for (var i = 1; i < options.totalPages + 1; i++) {
-                 if (i == options.currentPage) {
-                   pagetext = '<li class="page-item active"><a class="page-link" href="/Html/list-' + options.listId +
-                     '-' + i +
-                     '.html">' + i + '</a></li>';
-                   continue;
-                 }
-                 pagetext = '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId + '-' +
-                   i + '.html">' + i +
-                   '</a></li>';
-               }
+  var pagetext = '';
+  if (options.pageNumber >= options.totalPages) {
+    for (var i = 1; i < options.totalPages + 1; i++) {
+      if (i == options.currentPage) {
+        pagetext = '<li class="page-item active"><a class="page-link" href="/Html/list-' + options.listId +
+          '-' + i +
+          '.html">' + i + '</a></li>';
+        continue;
+      }
+      pagetext = '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId + '-' +
+        i + '.html">' + i +
+        '</a></li>';
+    }
 
-               return pagetext;
-             }
-
-
-             if (options.pageNumber % 2 != 0) {
-               var middle = (options.pageNumber - 1) / 2;
-               var left = options.currentPage - middle;
-               var right = options.currentPage + middle;
-               if (left < 1) {
-                 right = right + 1 - left;
-                 left = 1;
-               }
-               if (right > options.totalPages) {
-                 left = left + right - options.totalPages;
-                 right = options.totalPages;
-               }
+    return pagetext;
+  }
 
 
-               for (var i = left; i < options.currentPage; i++) {
-                 pagetext = pagetext + '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId +
-                   '-' +
-                   i + '.html">' + i +
-                   '</a></li>';
-               }
+  if (options.pageNumber % 2 != 0) {
+    var middle = (options.pageNumber - 1) / 2;
+    var left = options.currentPage - middle;
+    var right = options.currentPage + middle;
+    if (left < 1) {
+      right = right + 1 - left;
+      left = 1;
+    }
+    if (right > options.totalPages) {
+      left = left + right - options.totalPages;
+      right = options.totalPages;
+    }
 
 
-               pagetext = pagetext + '<li class="page-item  active"><a class="page-link" href="/Html/list-' + options.listId +
-                 '-' + options
-                 .currentPage +
-                 '.html">' + options.currentPage + '</a></li>';
-
-               for (var i = options.currentPage + 1; i < right + 1; i++) {
-
-
-                 pagetext = pagetext + '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId +
-                   '-' +
-                   i + '.html">' + i +
-                   '</a></li>';
-
-               }
-
-               if (right < options.totalPages) {
-
-                 pagetext = pagetext +
-                   '<li class="page-item"><a class="page-link"  onclick="return false;" >...</a></li>';
-
-                 pagetext = pagetext + '<li class="page-item"><a class="page-link"  href="/Html/list-' + options.listId +
-                   '-' +
-                   options.totalPages +
-                   '.html">' + options.totalPages +
-                   '</a></li>';
-
-               }
-
-               return pagetext;
-             }
+    for (var i = left; i < options.currentPage; i++) {
+      pagetext = pagetext + '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId +
+        '-' +
+        i + '.html">' + i +
+        '</a></li>';
+    }
 
 
+    pagetext = pagetext + '<li class="page-item  active"><a class="page-link" href="/Html/list-' + options.listId +
+      '-' + options
+      .currentPage +
+      '.html">' + options.currentPage + '</a></li>';
 
-             if (options.pageNumber % 2 == 0) {
-               /* 再-1是前面1个后面2个*/
-               var middle = (options.pageNumber - 1 - 1) / 2;
-               var left = options.currentPage - middle;
-               var right = options.currentPage + middle + 1;
-               if (left < 1) {
-                 right = right + 1 - left;
-                 left = 1;
-               }
-               if (right > options.totalPages) {
-                 left = left + right - options.totalPages;
-                 right = options.totalPages;
-               }
+    for (var i = options.currentPage + 1; i < right + 1; i++) {
 
 
-               for (var i = left; i < options.currentPage; i++) {
-                 pagetext = pagetext + '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId +
-                   '-' +
-                   i + '.html">' + i +
-                   '</a></li>';
-               }
-               pagetext = pagetext + '<li class="page-item  active"><a class="page-link" href="/Html/list-' + options.listId +
-                 '-' + options
-                 .currentPage +
-                 '">' + options.currentPage + '</a></li>';
-               for (var i = options.currentPage + 1; i < right + 1; i++) {
-                 pagetext = pagetext + '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId +
-                   '-' +
-                   i + '.html">' + i +
-                   '</a></li>';
-               }
+      pagetext = pagetext + '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId +
+        '-' +
+        i + '.html">' + i +
+        '</a></li>';
 
-               if (right < options.totalPages) {
-                 pagetext = pagetext +
-                   '<li class="page-item"><a class="page-link"  onclick="return false;" >...</a></li>';
-                 pagetext = pagetext + '<li class="page-item"><a class="page-link"  href="/Html/list-' + options.listId +
-                   '-' +
-                   options.totalPages +
-                   '.html" >' + options.totalPages +
-                   '</a></li>';
-               }
-               return pagetext;
-             }
-             return pagetext;
-           }
+    }
 
-           function pageMode(options) {
-             var dd = document.getElementById('pageMode');
-             dd.innerHTML = topText(options)+pageCon(options)+bottomText(options);
-           }
+    if (right < options.totalPages) {
+
+      pagetext = pagetext +
+        '<li class="page-item"><a class="page-link"  onclick="return false;" >...</a></li>';
+
+      pagetext = pagetext + '<li class="page-item"><a class="page-link"  href="/Html/list-' + options.listId +
+        '-' +
+        options.totalPages +
+        '.html">' + options.totalPages +
+        '</a></li>';
+
+    }
+
+    return pagetext;
+  }
 
 
-           function topText(options) {
-             var pagetop='';
-             pagetop = pagetop + '<ul class="pagination">';
 
-             if (options.currentPage - 1 > 0) {
-               var left = options.currentPage - 1;
-               pagetop = pagetop + '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId +
-                 '-' +
-                 left + '.html"><</a></li>';
-             } else {
-               pagetop = pagetop + '<li class="page-item"><a class="page-link" ><</a></li>';
-             }
-             return pagetop;
-           }
+  if (options.pageNumber % 2 == 0) {
+    /* 再-1是前面1个后面2个*/
+    var middle = (options.pageNumber - 1 - 1) / 2;
+    var left = options.currentPage - middle;
+    var right = options.currentPage + middle + 1;
+    if (left < 1) {
+      right = right + 1 - left;
+      left = 1;
+    }
+    if (right > options.totalPages) {
+      left = left + right - options.totalPages;
+      right = options.totalPages;
+    }
 
-           function bottomText(options) {
-             var pagebottom='';
-             if (options.currentPage + 1 <= options.totalPages) {
-               var right = options.currentPage + 1;
-               pagebottom = pagebottom + '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId +
-                 '-' +
-                 right + '.html">></a></li>';
-             } else {
-               pagebottom = pagebottom + '<li class="page-item"><a class="page-link" >></a></li>';
-             }
-             pagebottom = pagebottom + '</ul>';
-             return pagebottom;
-           }
+
+    for (var i = left; i < options.currentPage; i++) {
+      pagetext = pagetext + '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId +
+        '-' +
+        i + '.html">' + i +
+        '</a></li>';
+    }
+    pagetext = pagetext + '<li class="page-item  active"><a class="page-link" href="/Html/list-' + options.listId +
+      '-' + options
+      .currentPage +
+      '">' + options.currentPage + '</a></li>';
+    for (var i = options.currentPage + 1; i < right + 1; i++) {
+      pagetext = pagetext + '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId +
+        '-' +
+        i + '.html">' + i +
+        '</a></li>';
+    }
+
+    if (right < options.totalPages) {
+      pagetext = pagetext +
+        '<li class="page-item"><a class="page-link"  onclick="return false;" >...</a></li>';
+      pagetext = pagetext + '<li class="page-item"><a class="page-link"  href="/Html/list-' + options.listId +
+        '-' +
+        options.totalPages +
+        '.html" >' + options.totalPages +
+        '</a></li>';
+    }
+    return pagetext;
+  }
+  return pagetext;
+}
+
+function pageMode(options) {
+  var dd = document.getElementById('pageMode');
+  dd.innerHTML = topText(options) + pageCon(options) + bottomText(options);
+}
+
+
+function topText(options) {
+  var pagetop = '';
+  pagetop = pagetop + '<ul class="pagination">';
+
+  if (options.currentPage - 1 > 0) {
+    var left = options.currentPage - 1;
+    pagetop = pagetop + '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId +
+      '-' +
+      left + '.html"><</a></li>';
+  } else {
+    pagetop = pagetop + '<li class="page-item"><a class="page-link" ><</a></li>';
+  }
+  return pagetop;
+}
+
+function bottomText(options) {
+  var pagebottom = '';
+  if (options.currentPage + 1 <= options.totalPages) {
+    var right = options.currentPage + 1;
+    pagebottom = pagebottom + '<li class="page-item"><a class="page-link" href="/Html/list-' + options.listId +
+      '-' +
+      right + '.html">></a></li>';
+  } else {
+    pagebottom = pagebottom + '<li class="page-item"><a class="page-link" >></a></li>';
+  }
+  pagebottom = pagebottom + '</ul>';
+  return pagebottom;
+}
