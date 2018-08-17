@@ -174,73 +174,6 @@ $("input[name='shadow']").bind("click", function() {
 });
 
 
-/*生成按钮*/
-// $(function() {
-//   var canvasWidth = 300;
-//   var canvasHeight = 250;
-//   var canvaFont = "28px 'Arial'";
-//
-//   $("#build").click(function() {
-//     animation();
-//     drawCanvas(document.getElementById("set"));
-//     $("#download").show();
-//   });
-//
-//
-//
-//   function drawMode(ctx) {
-//     if ($('input:radio[name="chutxt"]:checked').val() == 1) {
-//       ctx.font = "bold " + canvaFont;
-//     } else {
-//       ctx.font = canvaFont;
-//     }
-//
-//     if ($('input:radio[name="shadow"]:checked').val() != 0) {
-//       ctx.shadowColor = $("#shdowcolor").val();
-//       ctx.shadowOffsetX = $("#shadowposition").val();
-//       ctx.shadowOffsetY = $("#shadowposition").val();
-//
-//       if ($('input:radio[name="shadow"]:checked').val() == 2) {
-//         ctx.shadowOffsetX = -($("#shadowposition").val());
-//       } else if ($('input:radio[name="shadow"]:checked').val() == 3) {
-//         ctx.shadowOffsetY = -($("#shadowposition").val());
-//       } else if ($('input:radio[name="shadow"]:checked').val() == 4) {
-//         ctx.shadowOffsetX = -($("#shadowposition").val());
-//         ctx.shadowOffsetY = -($("#shadowposition").val());
-//       }
-//       ctx.shadowBlur = $("#shadowblur").val();
-//     }
-//     ctx.fillStyle = $('#colortext').val();
-//     return ctx;
-//   }
-//
-//   function drawCanvas(imgObj) {
-//     var c = document.createElement('canvas');
-//     c.width = canvasWidth;
-//     c.height = canvasHeight;
-//     var ctx = c.getContext("2d");
-//     /* ctx.font一定要在ctx.measureText前面才能测量宽度*/
-//
-//     ctx = drawMode(ctx);
-//     var textW = ctx.measureText($('#name').val()).width;
-//     var local = (300 - textW) / 2 + 20;
-//     console.log(textW);
-//     ctx.drawImage(imgObj, 0, 0);
-//     /*姓名*/
-//     ctx.fillText($('#name').val(), local, 240);
-//     /*文字横向居中在编右20px*/
-//     try {
-//       var canvasData = c.toDataURL("image/jpeg", 1);
-//       $('#pic').attr("src", canvasData);
-//       $('#download').attr("href", canvasData);
-//       return false;
-//     } catch (e) {
-//       return true;
-//     }
-//   }
-//
-// });
-
 /* 注释动画 */
 $(function() {
   var domAnimator = new DomAnimator();
@@ -268,6 +201,230 @@ setTimeout(function() {
 }, 1000);
 
 
+
+
+/* Gif生成 */
+
+
+// var  dataobj = [{
+//           "text": $('#name').val(),
+//           "loc": [textW, 258]
+//         }];
+
+// var dataobj = {
+//   gifdata: [{
+//       "text": 'aaaa1',
+//       "loc": [50, 50],
+//       "page": [10, 20]
+//     },
+//     {
+//       "text": 'bbbb222',
+//       "loc": [110, 80],
+//       "page": [50, 80]
+//     }
+//   ],
+//   url: '/Mode/image/15.gif',
+//   font: "27px 'Microsoft Yahei'",
+//   width: 300,
+//   height: 168,
+//   imgid: "set"
+// };
+
+var superGif;
+
+function initGif(loadUrl, objid, callback) {
+  superGif = new SuperGif({
+    gif: document.getElementById(objid),
+    progressbar_height: 10,
+    progressbar_background_color: 'rgba(255, 255, 255, 0.5)',
+    progressbar_foreground_color: '#41b882'
+  });
+  superGif.load_url(loadUrl, function() {
+    callback();
+    // console.log('123');
+  });
+}
+
+function drawableGif(obj, callback) {
+  var dataobj = obj;
+  var canvasW = dataobj.width;
+  var canvasH = dataobj.height;
+  var imgid = dataobj.imgid;
+  var gifdata = dataobj.gifdata;
+  var loadUrl = dataobj.url;
+  var font = dataobj.font;
+
+  var gif = new GIF({
+    workers: 2,
+    quality: 10,
+    workerScript: '/Static/js/gif.worker.js'
+  });
+
+  // superGif.load_url(loadUrl, function() {
+  var c2 = document.createElement('canvas'); //自己创建的Canvas,用来加入gif里面生成
+  c2.width = canvasW;
+  c2.height = canvasH;
+
+  var ctx2 = c2.getContext("2d"); //获取自己创建的环境并写入
+  var gifCanvas = superGif.get_canvas(); //提取gif的Canvas
+  var num = 1; //记录运行次数,涉及内部函数需判断成功标记
+  var gifNum = superGif.get_length();
+  var textArr = new Array(gifNum);
+
+  for (var i = 0; i < gifdata.length; i++) {
+    var objText = gifdata[i]["text"];
+    var objLoc = gifdata[i]["loc"];
+    var objPage = gifdata[i]["page"];
+    // console.log(objPage);
+    for (var i2 = objPage[0]; i2 < objPage[1] + 1; i2++) {
+      textArr[i2] = new Array(objText, objLoc);
+    }
+  }
+
+  for (var i3 = 0; i3 < textArr.length; i3++) {
+    (function(i3) { //自我执行，并传参(将匿名函数形成一个表达式)(传递一个参数)
+      superGif.move_to(i3);
+      var text = '',
+        locH = 0,
+        locW = 0;
+      if (textArr[i3]) { //不存在就跳过内部用return
+        locW = textArr[i3][1][0];
+        locH = textArr[i3][1][1];
+        text = textArr[i3][0];
+      }
+
+      var img = document.createElement("img");
+      img.src = gifCanvas.toDataURL("image/png", 1);
+      img.onload = function() { //监听到图片加载结束，再压缩图片！
+        ctx2.drawImage(img, 0, 0);
+        ctx2.font = font;
+        // ctx2.fillStyle = '#FFFFFF';
+        ctx2 = drawMode(ctx2);
+        ctx2.fillText(text, locW, locH);
+        gif.addFrame(ctx2.getImageData(0, 0, canvasW, canvasH), {
+          copy: true,
+          delay: 140
+        });
+
+        ctx2.clearRect(0, 0, canvasW, canvasH); //清空上一个canvas界面
+
+        if (num >= superGif.get_length()) {
+          gif.on('finished', function(blob) {
+            var fileReader = new FileReader();
+            fileReader.onload = function(e) {
+              callback(e.target.result);
+              // $("#pic").attr('src', e.target.result);
+            }
+            fileReader.readAsDataURL(blob);
+          });
+          gif.render();
+          return;
+        }
+        num++;
+      };
+    })(i3);
+  }
+  // });
+}
+
+
+
+function initGif2(obj) {
+  var dataobj = obj;
+  var canvasW = dataobj.width;
+  var canvasH = dataobj.height;
+  var gifdata = dataobj.gifdata;
+  var font = dataobj.font;
+
+  var gif = new GIF({
+    workers: 2,
+    quality: 10,
+    workerScript: '/Static/js/gif.worker.js'
+  });
+
+  var superGif = new SuperGif({
+    gif: document.getElementById(imgid),
+    progressbar_height: 10,
+    progressbar_background_color: 'rgba(255, 255, 255, 0.5)',
+    progressbar_foreground_color: '#41b882'
+  });
+
+  superGif.load_url(loadUrl, function() {
+    var c2 = document.createElement('canvas'); //自己创建的Canvas,用来加入gif里面生成
+    c2.width = canvasW;
+    c2.height = canvasH;
+
+    var ctx2 = c2.getContext("2d"); //获取自己创建的环境并写入
+
+    var gifCanvas = superGif.get_canvas(); //提取gif的Canvas
+
+    var num = 1; //记录运行次数,涉及内部函数需判断成功标记
+
+    var gifNum = superGif.get_length();
+
+    var textArr = new Array(gifNum);
+
+    for (var i = 0; i < gifdata.length; i++) {
+
+      var objText = gifdata[i]["text"];
+      var objLoc = gifdata[i]["loc"];
+      var objPage = gifdata[i]["page"];
+      // console.log(objPage);
+      for (var i2 = objPage[0]; i2 < objPage[1] + 1; i2++) {
+        textArr[i2] = new Array(objText, objLoc);
+      }
+    }
+    // console.log(textArr);
+    console.log(textArr);
+    for (var i3 = 0; i3 < textArr.length; i3++) {
+      (function(i3) { //自我执行，并传参(将匿名函数形成一个表达式)(传递一个参数)
+        superGif.move_to(i3);
+        var text = '',
+          locH = 0,
+          locW = 0;
+        if (textArr[i3]) { //不存在就跳过内部用return
+          locW = textArr[i3][1][0];
+          locH = textArr[i3][1][1];
+          text = textArr[i3][0];
+        }
+
+        var img = document.createElement("img");
+        img.src = gifCanvas.toDataURL("image/png", 1);
+        img.onload = function() { //监听到图片加载结束，再压缩图片！
+          ctx2.drawImage(img, 0, 0);
+          ctx2.font = font;
+          ctx2.fillStyle = '#FFFFFF';
+          ctx2.fillText(text, locW, locH);
+          gif.addFrame(ctx2.getImageData(0, 0, canvasW, canvasH), {
+            copy: true,
+            delay: 140
+          });
+
+          ctx2.clearRect(0, 0, canvasW, canvasH); //清空上一个canvas界面
+
+          if (num >= superGif.get_length()) {
+            gif.on('finished', function(blob) {
+              var fileReader = new FileReader();
+              fileReader.onload = function(e) {
+                // callback(e.target.result);
+                $("#pic").attr('src', e.target.result);
+              }
+              fileReader.readAsDataURL(blob);
+            });
+            gif.render();
+            return;
+          }
+          num++;
+        };
+      })(i3);
+      //这时候这个括号里面的i和上面arr[i]的值是一样的都是取自for循环里面的i
+    }
+
+  });
+
+}
+
+
 /* 按钮生成下面全部 */
 var canvasHeight, canvasWidth, canvaFont, c, ctx;
 
@@ -279,9 +436,9 @@ function initImg(imgObj, width, height, font) {
   c = document.createElement('canvas');
   c.width = canvasWidth;
   c.height = canvasHeight;
-  ctx = c.getContext("2d").getImageData(0, 0, canvasWidth, canvasHeight);
+  ctx = c.getContext("2d");
   ctx = drawMode(ctx);
-  // ctx.drawImage(imgObj, 0, 0);
+  ctx.drawImage(imgObj, 0, 0);
   return ctx;
 }
 
@@ -290,7 +447,7 @@ function drawCanvas(dataArr) {
     ctx.fillText(dataArr[i]["text"], dataArr[i]["loc"][0], dataArr[i]["loc"][1]);
   }
   try {
-    var canvasData = c.toDataURL("image/png", 1);
+    var canvasData = c.toDataURL("image/jpeg", 1);
     return canvasData;
   } catch (e) {
     return e;
@@ -322,47 +479,6 @@ function drawMode(ctx) {
   ctx.fillStyle = $('#colortext').val();
   return ctx;
 }
-
-
-
-
-
-
-
-
-
-
-// var ctx2;
-
-$("#build").click(function() {
-
-  var gif = new GIF({
-    workers: 2,
-    quality: 10,
-    workerScript: '/Static/js/gif.worker.js'
-  });
-
-
-  ctx = initImg(document.getElementById("set"), 300, 216, "27px 'Microsoft Yahei'");
-  alert(ctx);
-
-  gif.addFrame(ctx, {
-  copy: true
-  });
-  gif.addFrame(ctx, {
-copy: true
-  });
-
-  gif.on('finished', function(blob) {
-     window.open(URL.createObjectURL(blob));
-  });
-
-  gif.render();
-});
-
-
-
-
 
 /* list的底部翻页*/
 function pageCon(options) {
