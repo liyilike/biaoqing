@@ -220,9 +220,6 @@ function half(text, font, w) {
 
 
 /* Gif生成 */
-
-var superGif, canvasGif, fontGif, wGif, hGif;
-
 var runGif = false,
   initGif = false;
 
@@ -234,8 +231,9 @@ function GifMode(obj) {
     if (!runGif) {
       return;
     }
-    GifWork(getDataArr(), function(gifbase) {
-      $("#setresult").html('<img src="' + gifbase + '" id="set" />');
+    GifWork(initobj, getDataArr(), function(gifbase) {
+      $('#set').attr("src", gifbase);
+      $('#download').attr("href", gifbase);
       hideLoad();
     });
   });
@@ -247,25 +245,19 @@ function GifMode(obj) {
       runGif = true;
       return;
     }
-    GifWork(getDataArr(), function(gifbase) {
-      $("#setresult").html('<img src="' + gifbase + '" id="set" />');
+    GifWork(initobj, getDataArr(), function(gifbase) {
+      $('#set').attr("src", gifbase);
+      $('#download').attr("href", gifbase);
       hideLoad();
     });
   });
-
 }
 
+var superGif;
 
 function GifCreate(obj, callback) {
-  wGif = obj.w;
-  hGif = obj.h;
   var loadUrl = obj.load;
   var imgid = obj.imgid;
-  fontGif = obj.font;
-
-  canvasGif = document.createElement('canvas'); //自己创建的Canvas,用来加入gif里面生成
-  canvasGif.width = wGif;
-  canvasGif.height = hGif;
 
   superGif = new SuperGif({
     gif: document.getElementById(imgid),
@@ -278,9 +270,12 @@ function GifCreate(obj, callback) {
   });
 }
 
-function GifWork(obj, callback) {
-  var dataArr = obj;
-  var font = fontGif;
+function GifWork(obj, obj2, callback) {
+  var dataArr = obj2;
+  var wGif = obj.w;
+  var hGif = obj.h;
+  var delay = obj.delay;
+  var font = obj.font;
 
   var gif = new GIF({
     workers: 2,
@@ -288,9 +283,9 @@ function GifWork(obj, callback) {
     workerScript: '/Static/js/gif.worker.js'
   });
   // superGif.load_url(loadUrl, function() {
-  // var canvasGif = document.createElement('canvas'); //自己创建的Canvas,用来加入gif里面生成
-  // canvasGif.width = wGif;
-  // canvasGif.height = hGif;
+  var canvasGif = document.createElement('canvas'); //自己创建的Canvas,用来加入gif里面生成
+  canvasGif.width = wGif;
+  canvasGif.height = hGif;
   var ctx = canvasGif.getContext("2d"); //获取自己创建的环境并写入
   var gifCanvas = superGif.get_canvas(); //提取gif的Canvas
   var num = 1; //记录运行次数,涉及内部函数需判断成功标记
@@ -301,56 +296,56 @@ function GifWork(obj, callback) {
     var objText = dataArr[i]["text"];
     var objLoc = dataArr[i]["loc"];
     var objPage = dataArr[i]["page"];
-    // console.log(objPage);
-    for (var i2 = objPage[0]; i2 < objPage[1] + 1; i2++) {
+    for (var i2 = objPage[0] - 1; i2 < objPage[1]; i2++) {
       textArr[i2] = new Array(objText, objLoc);
     }
   }
 
-  for (var i3 = 0; i3 < textArr.length; i3++) {
-    (function(i3) { //自我执行，并传参(将匿名函数形成一个表达式)(传递一个参数)
-      superGif.move_to(i3);
-      var text = '',
-        locH = 0,
-        locW = 0;
-      if (textArr[i3]) { //不存在就跳过内部用return
-        locW = textArr[i3][1][0];
-        locH = textArr[i3][1][1];
-        text = textArr[i3][0];
-      }
-
-      var img = document.createElement("img");
-      img.src = gifCanvas.toDataURL("image/png", 1);
-      img.onload = function() { //监听到图片加载结束，再压缩图片！
-        ctx.drawImage(img, 0, 0);
-        ctx.font = font;
-        // ctx.fillStyle = '#FFFFFF';
-        ctx = drawMode(ctx);
-        ctx.fillText(text, locW, locH);
-        gif.addFrame(ctx.getImageData(0, 0, wGif, hGif), {
-          copy: true,
-          delay: 140
-        });
-
-        ctx.clearRect(0, 0, wGif, hGif); //清空上一个canvas界面
-
-        if (num >= superGif.get_length()) {
-          gif.on('finished', function(blob) {
-            var fileReader = new FileReader();
-            fileReader.onload = function(e) {
-              callback(e.target.result);
-              // $("#pic").attr('src', e.target.result);
-            }
-            fileReader.readAsDataURL(blob);
-          });
-          gif.render();
+  function run() {
+    superGif.move_to(i3);
+    var text = '',
+      locH = 0,
+      locW = 0;
+    if (textArr[i3]) { //不存在就跳过内部用return
+      locW = textArr[i3][1][0];
+      locH = textArr[i3][1][1];
+      text = textArr[i3][0];
+    }
+    var img = document.createElement("img");
+    img.src = gifCanvas.toDataURL("image/png", 1);
+    img.onload = function() { //监听到图片加载结束，再压缩图片！
+      ctx.drawImage(img, 0, 0);
+      ctx.font = font;
+      ctx = drawMode(ctx);
+      ctx.fillText(text, locW, locH);
+      // console.log(delay+'ggg');
+      gif.addFrame(ctx.getImageData(0, 0, wGif, hGif), {
+        copy: true,
+        delay: delay
+      });
+      i3++;
+      if (i3 < textArr.length) {
+        run();
+      } else {
+        gif.on('finished', function(blob) {
+          callback(URL.createObjectURL(blob));
+          i3 = 0;
           return;
-        }
-        num++;
-      };
-    })(i3);
+          // var fileReader = new FileReader();
+          // fileReader.onload = function(e) {
+          //   callback(e.target.result);
+          //   i3 = 0;
+          //   return;
+          // }
+          // fileReader.readAsDataURL(blob);
+        });
+        gif.render();
+      }
+    }
   }
-  // });
+
+  var i3 = 0;
+  run();
 }
 
 /* 按钮生成下面全部 */
