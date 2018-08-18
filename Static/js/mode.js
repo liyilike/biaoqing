@@ -348,24 +348,16 @@ function GifWork(obj, obj2, callback) {
 }
 
 /* 按钮生成下面全部 */
-
-
 function ImgMode(obj) {
   var initobj = obj;
-  // var imgObj = document.createElement("img");
-  // imgObj.src = initobj.src;
-
   $("#build").click(function() {
     showLoad();
     $("#download").show();
     ImgWork(initobj, getDataArr(), function(canvasData) {
-      $('#set').attr("src", gifbase);
-      $('#download').attr("href", gifbase);
+      $('#set').attr("src", canvasData);
+      $('#download').attr("href", canvasData);
       hideLoad();
     });
-    // $('#set').attr("src", canvasData);
-    // $('#download').attr("href", canvasData);
-    // hideLoad();
   });
 
 }
@@ -380,9 +372,9 @@ function ImgWork(obj, obj2,callback) {
   // var imgObj = document.getElementById(imgid);
   // var imgObj = document.createElement("img");
   // imgObj.src = initobj.src;
-  var img = document.createElement("img");
-  img.src = initobj.src;
-  img.onload = function() { //监听到图片加载结束，再压缩图片！
+  var imgObj = document.createElement("img");
+  imgObj.src = initobj.src;
+  imgObj.onload = function() { //监听到图片加载结束，再压缩图片！
 
   var c = document.createElement('canvas');
   c.width = canvasWidth;
@@ -400,6 +392,7 @@ function ImgWork(obj, obj2,callback) {
   c.toBlob(function(blob) {
     var canvasData = URL.createObjectURL(blob);
     // console.log(canvasData);
+    console.log(canvasData);
     callback(canvasData);
     // return canvasData;
   }, "image/png", 1);
