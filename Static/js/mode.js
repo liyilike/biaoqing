@@ -388,6 +388,12 @@ function ImgWork(img, obj, obj2) {
     ctx.fillText(dataArr[i]["text"], dataArr[i]["loc"][0], dataArr[i]["loc"][1]);
   }
 
+  // c.toBlob(function(blob) {
+  //   var canvasData = URL.createObjectURL(blob);
+  //   console.log(canvasData);
+  //   return canvasData;
+  // }, "image/png", 1);
+
   try {
     var canvasData = c.toDataURL("image/png", 1);
     return canvasData;
