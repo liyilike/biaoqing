@@ -202,7 +202,6 @@ setTimeout(function() {
   NProgress.done();
 }, 1000);
 
-
 /* canvas测量宽度 */
 var measureCanvas = document.createElement('canvas');
 var measureCtx = measureCanvas.getContext("2d");
@@ -353,32 +352,42 @@ function GifWork(obj, obj2, callback) {
 
 function ImgMode(obj) {
   var initobj = obj;
-  var imgObj = document.createElement("img");
-  imgObj.src = initobj.src;
+  // var imgObj = document.createElement("img");
+  // imgObj.src = initobj.src;
 
   $("#build").click(function() {
     showLoad();
     $("#download").show();
-    var canvasData = ImgWork(imgObj, initobj, getDataArr());
-    $('#set').attr("src", canvasData);
-    $('#download').attr("href", canvasData);
-    hideLoad();
+    ImgWork(initobj, getDataArr(), function(canvasData) {
+      $('#set').attr("src", gifbase);
+      $('#download').attr("href", gifbase);
+      hideLoad();
+    });
+    // $('#set').attr("src", canvasData);
+    // $('#download').attr("href", canvasData);
+    // hideLoad();
   });
 
 }
 
 
-function ImgWork(img, obj, obj2) {
+function ImgWork(obj, obj2,callback) {
   var canvasHeight = obj.h;
   var canvasWidth = obj.w;
   var canvaFont = obj.font;
+  var imgid = obj.font;
   var dataArr = obj2;
-
-  var imgObj = img;
+  // var imgObj = document.getElementById(imgid);
+  // var imgObj = document.createElement("img");
+  // imgObj.src = initobj.src;
+  var img = document.createElement("img");
+  img.src = initobj.src;
+  img.onload = function() { //监听到图片加载结束，再压缩图片！
 
   var c = document.createElement('canvas');
   c.width = canvasWidth;
   c.height = canvasHeight;
+
   var ctx = c.getContext("2d");
 
   ctx.drawImage(imgObj, 0, 0);
@@ -388,18 +397,22 @@ function ImgWork(img, obj, obj2) {
     ctx.fillText(dataArr[i]["text"], dataArr[i]["loc"][0], dataArr[i]["loc"][1]);
   }
 
-  // c.toBlob(function(blob) {
-  //   var canvasData = URL.createObjectURL(blob);
-  //   console.log(canvasData);
-  //   return canvasData;
-  // }, "image/png", 1);
+  c.toBlob(function(blob) {
+    var canvasData = URL.createObjectURL(blob);
+    // console.log(canvasData);
+    callback(canvasData);
+    // return canvasData;
+  }, "image/png", 1);
 
-  try {
-    var canvasData = c.toDataURL("image/png", 1);
-    return canvasData;
-  } catch (e) {
-    return e;
-  }
+  // try {
+  //   var canvasData = c.toDataURL("image/png", 1);
+  //   return canvasData;
+  // } catch (e) {
+  //   return e;
+  // }
+
+
+}
 
 }
 
