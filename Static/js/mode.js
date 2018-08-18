@@ -122,7 +122,16 @@ var DomAnimator = (function() {
   })
 });
 
-
+/* 注释动画 */
+$(function() {
+  var domAnimator = new DomAnimator();
+  domAnimator.addFrame('你为什么');
+  domAnimator.addFrame('要看源代码?');
+  domAnimator.addFrame('关注公众号: 世界极限挑战');
+  domAnimator.addFrame('回复 源代码 这三字,赠送源码git地址');
+  domAnimator.addFrame('哥哥你关注公众号,我就以身相许!让你日个够');
+  domAnimator.animate(1500);
+});
 
 $(function() {
   /*阴影的两个横滑动条*/
@@ -152,18 +161,18 @@ $(function() {
   });
 });
 
+
 $(function() {
   /*阴影颜色选择*/
   $('#shadowpicker').colorpicker({
-    color: "rgba(0, 0, 0, 0.2)",
+    color: "rgba(0, 0, 0, 0.2)"
   });
   /*文字颜色选择*/
   $('#colorpicker').colorpicker({
-    color: "#000000",
+    color: "#000000"
   });
   // $('#colorpicker').on('colorpickerChange', function(event) {});
 });
-
 /* 阴影的zuoyou1上下的点击效果 */
 $("input[name='shadow']").bind("click", function() {
   if ($(this).val() == 0) {
@@ -173,27 +182,20 @@ $("input[name='shadow']").bind("click", function() {
   }
 });
 
-
-/* 注释动画 */
-$(function() {
-  var domAnimator = new DomAnimator();
-  domAnimator.addFrame('你为什么');
-  domAnimator.addFrame('要看源代码?');
-  domAnimator.addFrame('关注公众号: 世界极限挑战');
-  domAnimator.addFrame('回复 源代码 这三字,赠送源码git地址');
-  domAnimator.addFrame('哥哥你关注公众号,我就以身相许!让你日个够');
-  domAnimator.animate(1500);
-});
-
 /* 等待加载动画 */
-function animation() {
+function showLoad() {
   $("#result").LoadingOverlay("show", {
     background: "rgba(220,220,220, 0.5)",
     imageColor: "#33a3dc"
   });
   $("#result").LoadingOverlay("show");
-  $("#result").LoadingOverlay("hide", true);
 }
+
+function hideLoad() {
+  $("#result").LoadingOverlay("hide", true);
+  $("#download").show();
+}
+
 
 /* 滚动条头顶结束 */
 setTimeout(function() {
@@ -201,80 +203,104 @@ setTimeout(function() {
 }, 1000);
 
 
+/* canvas测量宽度 */
+var measureCanvas = document.createElement('canvas');
+var measureCtx = measureCanvas.getContext("2d");
+
+function measureText(text, font) {
+  measureCtx.font = font;
+  return measureCtx.measureText(text).width;
+}
+
+/* canvas测量文字的一半宽度 */
+function half(text, font, w) {
+  measureCtx.font = font;
+  return (w - measureCtx.measureText(text).width) / 2;
+}
 
 
 /* Gif生成 */
 
+var superGif, canvasGif, fontGif, wGif, hGif;
 
-// var  dataobj = [{
-//           "text": $('#name').val(),
-//           "loc": [textW, 258]
-//         }];
+var runGif = false,
+  initGif = false;
 
-// var dataobj = {
-//   gifdata: [{
-//       "text": 'aaaa1',
-//       "loc": [50, 50],
-//       "page": [10, 20]
-//     },
-//     {
-//       "text": 'bbbb222',
-//       "loc": [110, 80],
-//       "page": [50, 80]
-//     }
-//   ],
-//   url: '/Mode/image/15.gif',
-//   font: "27px 'Microsoft Yahei'",
-//   width: 300,
-//   height: 168,
-//   imgid: "set"
-// };
+function GifMode(obj) {
+  var initobj = obj;
+  // var dataArr = obj2;
+  GifCreate(initobj, function() {
+    initGif = true;
+    if (!runGif) {
+      return;
+    }
+    GifWork(getDataArr(), function(gifbase) {
+      $("#setresult").html('<img src="' + gifbase + '" id="set" />');
+      hideLoad();
+    });
+  });
+  // var dataArr = obj;
+  $("#build").click(function() {
+    showLoad();
+    /* 要是初始化没完成 开启run=true,初始化完毕就马上运行 */
+    if (!initGif) {
+      runGif = true;
+      return;
+    }
+    GifWork(getDataArr(), function(gifbase) {
+      $("#setresult").html('<img src="' + gifbase + '" id="set" />');
+      hideLoad();
+    });
+  });
 
-var superGif;
+}
 
-function initGif(loadUrl, objid, callback) {
+
+function GifCreate(obj, callback) {
+  wGif = obj.w;
+  hGif = obj.h;
+  var loadUrl = obj.load;
+  var imgid = obj.imgid;
+  fontGif = obj.font;
+
+  canvasGif = document.createElement('canvas'); //自己创建的Canvas,用来加入gif里面生成
+  canvasGif.width = wGif;
+  canvasGif.height = hGif;
+
   superGif = new SuperGif({
-    gif: document.getElementById(objid),
+    gif: document.getElementById(imgid),
     progressbar_height: 10,
     progressbar_background_color: 'rgba(255, 255, 255, 0.5)',
     progressbar_foreground_color: '#41b882'
   });
   superGif.load_url(loadUrl, function() {
     callback();
-    // console.log('123');
   });
 }
 
-function drawableGif(obj, callback) {
-  var dataobj = obj;
-  var canvasW = dataobj.width;
-  var canvasH = dataobj.height;
-  var imgid = dataobj.imgid;
-  var gifdata = dataobj.gifdata;
-  var loadUrl = dataobj.url;
-  var font = dataobj.font;
+function GifWork(obj, callback) {
+  var dataArr = obj;
+  var font = fontGif;
 
   var gif = new GIF({
     workers: 2,
     quality: 10,
     workerScript: '/Static/js/gif.worker.js'
   });
-
   // superGif.load_url(loadUrl, function() {
-  var c2 = document.createElement('canvas'); //自己创建的Canvas,用来加入gif里面生成
-  c2.width = canvasW;
-  c2.height = canvasH;
-
-  var ctx2 = c2.getContext("2d"); //获取自己创建的环境并写入
+  // var canvasGif = document.createElement('canvas'); //自己创建的Canvas,用来加入gif里面生成
+  // canvasGif.width = wGif;
+  // canvasGif.height = hGif;
+  var ctx = canvasGif.getContext("2d"); //获取自己创建的环境并写入
   var gifCanvas = superGif.get_canvas(); //提取gif的Canvas
   var num = 1; //记录运行次数,涉及内部函数需判断成功标记
   var gifNum = superGif.get_length();
   var textArr = new Array(gifNum);
 
-  for (var i = 0; i < gifdata.length; i++) {
-    var objText = gifdata[i]["text"];
-    var objLoc = gifdata[i]["loc"];
-    var objPage = gifdata[i]["page"];
+  for (var i = 0; i < dataArr.length; i++) {
+    var objText = dataArr[i]["text"];
+    var objLoc = dataArr[i]["loc"];
+    var objPage = dataArr[i]["page"];
     // console.log(objPage);
     for (var i2 = objPage[0]; i2 < objPage[1] + 1; i2++) {
       textArr[i2] = new Array(objText, objLoc);
@@ -296,17 +322,17 @@ function drawableGif(obj, callback) {
       var img = document.createElement("img");
       img.src = gifCanvas.toDataURL("image/png", 1);
       img.onload = function() { //监听到图片加载结束，再压缩图片！
-        ctx2.drawImage(img, 0, 0);
-        ctx2.font = font;
-        // ctx2.fillStyle = '#FFFFFF';
-        ctx2 = drawMode(ctx2);
-        ctx2.fillText(text, locW, locH);
-        gif.addFrame(ctx2.getImageData(0, 0, canvasW, canvasH), {
+        ctx.drawImage(img, 0, 0);
+        ctx.font = font;
+        // ctx.fillStyle = '#FFFFFF';
+        ctx = drawMode(ctx);
+        ctx.fillText(text, locW, locH);
+        gif.addFrame(ctx.getImageData(0, 0, wGif, hGif), {
           copy: true,
           delay: 140
         });
 
-        ctx2.clearRect(0, 0, canvasW, canvasH); //清空上一个canvas界面
+        ctx.clearRect(0, 0, wGif, hGif); //清空上一个canvas界面
 
         if (num >= superGif.get_length()) {
           gif.on('finished', function(blob) {
@@ -327,116 +353,69 @@ function drawableGif(obj, callback) {
   // });
 }
 
+/* 按钮生成下面全部 */
 
 
-function initGif2(obj) {
-  var dataobj = obj;
-  var canvasW = dataobj.width;
-  var canvasH = dataobj.height;
-  var gifdata = dataobj.gifdata;
-  var font = dataobj.font;
+function ImgMode(obj) {
+  var initobj = obj;
+  var imgObj = document.createElement("img");
+  imgObj.src = initobj.src;
 
-  var gif = new GIF({
-    workers: 2,
-    quality: 10,
-    workerScript: '/Static/js/gif.worker.js'
-  });
-
-  var superGif = new SuperGif({
-    gif: document.getElementById(imgid),
-    progressbar_height: 10,
-    progressbar_background_color: 'rgba(255, 255, 255, 0.5)',
-    progressbar_foreground_color: '#41b882'
-  });
-
-  superGif.load_url(loadUrl, function() {
-    var c2 = document.createElement('canvas'); //自己创建的Canvas,用来加入gif里面生成
-    c2.width = canvasW;
-    c2.height = canvasH;
-
-    var ctx2 = c2.getContext("2d"); //获取自己创建的环境并写入
-
-    var gifCanvas = superGif.get_canvas(); //提取gif的Canvas
-
-    var num = 1; //记录运行次数,涉及内部函数需判断成功标记
-
-    var gifNum = superGif.get_length();
-
-    var textArr = new Array(gifNum);
-
-    for (var i = 0; i < gifdata.length; i++) {
-
-      var objText = gifdata[i]["text"];
-      var objLoc = gifdata[i]["loc"];
-      var objPage = gifdata[i]["page"];
-      // console.log(objPage);
-      for (var i2 = objPage[0]; i2 < objPage[1] + 1; i2++) {
-        textArr[i2] = new Array(objText, objLoc);
-      }
-    }
-    // console.log(textArr);
-    console.log(textArr);
-    for (var i3 = 0; i3 < textArr.length; i3++) {
-      (function(i3) { //自我执行，并传参(将匿名函数形成一个表达式)(传递一个参数)
-        superGif.move_to(i3);
-        var text = '',
-          locH = 0,
-          locW = 0;
-        if (textArr[i3]) { //不存在就跳过内部用return
-          locW = textArr[i3][1][0];
-          locH = textArr[i3][1][1];
-          text = textArr[i3][0];
-        }
-
-        var img = document.createElement("img");
-        img.src = gifCanvas.toDataURL("image/png", 1);
-        img.onload = function() { //监听到图片加载结束，再压缩图片！
-          ctx2.drawImage(img, 0, 0);
-          ctx2.font = font;
-          ctx2.fillStyle = '#FFFFFF';
-          ctx2.fillText(text, locW, locH);
-          gif.addFrame(ctx2.getImageData(0, 0, canvasW, canvasH), {
-            copy: true,
-            delay: 140
-          });
-
-          ctx2.clearRect(0, 0, canvasW, canvasH); //清空上一个canvas界面
-
-          if (num >= superGif.get_length()) {
-            gif.on('finished', function(blob) {
-              var fileReader = new FileReader();
-              fileReader.onload = function(e) {
-                // callback(e.target.result);
-                $("#pic").attr('src', e.target.result);
-              }
-              fileReader.readAsDataURL(blob);
-            });
-            gif.render();
-            return;
-          }
-          num++;
-        };
-      })(i3);
-      //这时候这个括号里面的i和上面arr[i]的值是一样的都是取自for循环里面的i
-    }
-
+  $("#build").click(function() {
+    showLoad();
+    $("#download").show();
+    var canvasData = ImgWork(imgObj, initobj, getDataArr());
+    $('#set').attr("src", canvasData);
+    $('#download').attr("href", canvasData);
+    hideLoad();
   });
 
 }
 
 
-/* 按钮生成下面全部 */
-var canvasHeight, canvasWidth, canvaFont, c, ctx;
+function ImgWork(img, obj, obj2) {
+  var canvasHeight = obj.h;
+  var canvasWidth = obj.w;
+  var canvaFont = obj.font;
+  var dataArr = obj2;
 
-function initImg(imgObj, width, height, font) {
-  canvasHeight = height;
-  canvasWidth = width;
-  canvaFont = font;
+  var imgObj = img;
+
+  var c = document.createElement('canvas');
+  c.width = canvasWidth;
+  c.height = canvasHeight;
+  var ctx = c.getContext("2d");
+
+  ctx.drawImage(imgObj, 0, 0);
+  ctx.font = canvaFont;
+  ctx = drawMode(ctx);
+  for (var i = 0; i < dataArr.length; i++) {
+    ctx.fillText(dataArr[i]["text"], dataArr[i]["loc"][0], dataArr[i]["loc"][1]);
+  }
+
+  try {
+    var canvasData = c.toDataURL("image/png", 1);
+    return canvasData;
+  } catch (e) {
+    return e;
+  }
+
+}
+
+
+var c, ctx;
+
+function initImg(obj, imgObj) {
+  var initobj = obj;
+  var canvasHeight = initobj.h;
+  var canvasWidth = initobj.w;
+  var canvaFont = initobj.font;
 
   c = document.createElement('canvas');
   c.width = canvasWidth;
   c.height = canvasHeight;
   ctx = c.getContext("2d");
+  ctx.font = canvaFont;
   ctx = drawMode(ctx);
   ctx.drawImage(imgObj, 0, 0);
   return ctx;
@@ -448,6 +427,7 @@ function drawCanvas(dataArr) {
   }
   try {
     var canvasData = c.toDataURL("image/jpeg", 1);
+
     return canvasData;
   } catch (e) {
     return e;
@@ -456,11 +436,8 @@ function drawCanvas(dataArr) {
 
 function drawMode(ctx) {
   if ($('input:radio[name="chutxt"]:checked').val() == 1) {
-    ctx.font = "bold " + canvaFont;
-  } else {
-    ctx.font = canvaFont;
+    ctx.font = "bold " + ctx.font;
   }
-
   if ($('input:radio[name="shadow"]:checked').val() != 0) {
     ctx.shadowColor = $("#shdowcolor").val();
     ctx.shadowOffsetX = $("#shadowposition").val();
