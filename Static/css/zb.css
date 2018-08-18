@@ -400,11 +400,11 @@ ul {
 }
 
 /* 默认loading的图片 */
-#load-img .inner {
+/* #load-img .inner {
   background-image: url("http://ww1.sinaimg.cn/large/005GPQHggy1fu86scpdvcg306q046glk.gif");
   background-position: center;
   background-repeat: no-repeat;
-}
+} */
 
 /* 自己的css */
 
