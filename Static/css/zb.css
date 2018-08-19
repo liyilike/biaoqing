@@ -517,4 +517,21 @@ ul {
   margin-right: -25px;
 }
 
+/* 底部的友情链接css */
+.link_top {
+  background-repeat: repeat-x;
+  background-position: 0 -48px;
+  clear: both;
+  -moz-border-radius: 6px 6px 0 0;
+  -webkit-border-radius: 6px 6px 0 0;
+  border-radius: 6px 6px 0 0;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: #d6dce1;
+  -moz-box-shadow: 0 0 10px #dde2e6;
+  -webkit-box-shadow: 0 0 10px #dde2e6;
+  box-shadow: 0 0 10px #dde2e6;
+  padding: .55rem 1.25rem;
+}
+
 /* index的css */

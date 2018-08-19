@@ -1,5 +1,5 @@
 /* 注释动画 */
-var DomAnimator = (function() {
+var DomAnimator = (function () {
   var currentFrame = 0;
   var frames = [];
   var nodes = [];
@@ -53,7 +53,7 @@ var DomAnimator = (function() {
     if (attached === false) {
       attachToDocument()
     }
-    interval = setInterval(function() {
+    interval = setInterval(function () {
       renderFrame()
     }, time)
   }
@@ -100,7 +100,7 @@ var DomAnimator = (function() {
     if (!frameData) {
       frameData = "no frame data"
     }
-    var frameType = typeof(frameData);
+    var frameType = typeof (frameData);
     if (frameType === "object") {
       frames.push(parseMultilineFrame(frameData))
     } else {
@@ -123,7 +123,7 @@ var DomAnimator = (function() {
 });
 
 /* 注释动画 */
-$(function() {
+$(function () {
   var domAnimator = new DomAnimator();
   domAnimator.addFrame('你为什么');
   domAnimator.addFrame('要看源代码?');
@@ -133,7 +133,7 @@ $(function() {
   domAnimator.animate(1500);
 });
 
-$(function() {
+$(function () {
   /*阴影的两个横滑动条*/
   $("#shadowposition").ionRangeSlider({
     type: "single",
@@ -162,7 +162,7 @@ $(function() {
 });
 
 
-$(function() {
+$(function () {
   /*阴影颜色选择*/
   $('#shadowpicker').colorpicker({
     color: "rgba(0, 0, 0, 0.2)"
@@ -174,7 +174,7 @@ $(function() {
   // $('#colorpicker').on('colorpickerChange', function(event) {});
 });
 /* 阴影的zuoyou1上下的点击效果 */
-$("input[name='shadow']").bind("click", function() {
+$("input[name='shadow']").bind("click", function () {
   if ($(this).val() == 0) {
     $("#shadowdiv").hide();
   } else {
@@ -198,7 +198,7 @@ function hideLoad() {
 
 
 /* 滚动条头顶结束 */
-setTimeout(function() {
+setTimeout(function () {
   NProgress.done();
 }, 1000);
 
@@ -225,26 +225,26 @@ var runGif = false,
 function GifMode(obj) {
   var initobj = obj;
   // var dataArr = obj2;
-  GifCreate(initobj, function() {
+  GifCreate(initobj, function () {
     initGif = true;
     if (!runGif) {
       return;
     }
-    GifWork(initobj, getDataArr(), function(gifbase) {
+    GifWork(initobj, getDataArr(), function (gifbase) {
       $('#set').attr("src", gifbase);
       $('#download').attr("href", gifbase);
       hideLoad();
     });
   });
   // var dataArr = obj;
-  $("#build").click(function() {
+  $("#build").click(function () {
     showLoad();
     /* 要是初始化没完成 开启run=true,初始化完毕就马上运行 */
     if (!initGif) {
       runGif = true;
       return;
     }
-    GifWork(initobj, getDataArr(), function(gifbase) {
+    GifWork(initobj, getDataArr(), function (gifbase) {
       $('#set').attr("src", gifbase);
       $('#download').attr("href", gifbase);
       hideLoad();
@@ -264,7 +264,7 @@ function GifCreate(obj, callback) {
     progressbar_background_color: 'rgba(255, 255, 255, 0.5)',
     progressbar_foreground_color: '#41b882'
   });
-  superGif.load_url(loadUrl, function() {
+  superGif.load_url(loadUrl, function () {
     callback();
   });
 }
@@ -312,7 +312,7 @@ function GifWork(obj, obj2, callback) {
     }
     var img = document.createElement("img");
     img.src = gifCanvas.toDataURL("image/png", 1);
-    img.onload = function() { //监听到图片加载结束，再压缩图片！
+    img.onload = function () { //监听到图片加载结束，再压缩图片！
       ctx.drawImage(img, 0, 0);
       ctx.font = font;
       ctx = drawMode(ctx);
@@ -326,7 +326,7 @@ function GifWork(obj, obj2, callback) {
       if (i3 < textArr.length) {
         run();
       } else {
-        gif.on('finished', function(blob) {
+        gif.on('finished', function (blob) {
           callback(URL.createObjectURL(blob));
           i3 = 0;
           return;
@@ -350,10 +350,10 @@ function GifWork(obj, obj2, callback) {
 /* 按钮生成下面全部 */
 function ImgMode(obj) {
   var initobj = obj;
-  $("#build").click(function() {
+  $("#build").click(function () {
     showLoad();
     $("#download").show();
-    ImgWork(initobj, getDataArr(), function(canvasData) {
+    ImgWork(initobj, getDataArr(), function (canvasData) {
       $('#set').attr("src", canvasData);
       $('#download').attr("href", canvasData);
       hideLoad();
@@ -363,7 +363,7 @@ function ImgMode(obj) {
 }
 
 
-function ImgWork(obj, obj2,callback) {
+function ImgWork(obj, obj2, callback) {
   var canvasHeight = obj.h;
   var canvasWidth = obj.w;
   var canvaFont = obj.font;
@@ -374,38 +374,38 @@ function ImgWork(obj, obj2,callback) {
   // imgObj.src = initobj.src;
   var imgObj = document.createElement("img");
   imgObj.src = initobj.src;
-  imgObj.onload = function() { //监听到图片加载结束，再压缩图片！
+  imgObj.onload = function () { //监听到图片加载结束，再压缩图片！
 
-  var c = document.createElement('canvas');
-  c.width = canvasWidth;
-  c.height = canvasHeight;
+    var c = document.createElement('canvas');
+    c.width = canvasWidth;
+    c.height = canvasHeight;
 
-  var ctx = c.getContext("2d");
+    var ctx = c.getContext("2d");
 
-  ctx.drawImage(imgObj, 0, 0);
-  ctx.font = canvaFont;
-  ctx = drawMode(ctx);
-  for (var i = 0; i < dataArr.length; i++) {
-    ctx.fillText(dataArr[i]["text"], dataArr[i]["loc"][0], dataArr[i]["loc"][1]);
+    ctx.drawImage(imgObj, 0, 0);
+    ctx.font = canvaFont;
+    ctx = drawMode(ctx);
+    for (var i = 0; i < dataArr.length; i++) {
+      ctx.fillText(dataArr[i]["text"], dataArr[i]["loc"][0], dataArr[i]["loc"][1]);
+    }
+
+    c.toBlob(function (blob) {
+      var canvasData = URL.createObjectURL(blob);
+      // console.log(canvasData);
+      console.log(canvasData);
+      callback(canvasData);
+      // return canvasData;
+    }, "image/png", 1);
+
+    // try {
+    //   var canvasData = c.toDataURL("image/png", 1);
+    //   return canvasData;
+    // } catch (e) {
+    //   return e;
+    // }
+
+
   }
-
-  c.toBlob(function(blob) {
-    var canvasData = URL.createObjectURL(blob);
-    // console.log(canvasData);
-    console.log(canvasData);
-    callback(canvasData);
-    // return canvasData;
-  }, "image/png", 1);
-
-  // try {
-  //   var canvasData = c.toDataURL("image/png", 1);
-  //   return canvasData;
-  // } catch (e) {
-  //   return e;
-  // }
-
-
-}
 
 }
 
